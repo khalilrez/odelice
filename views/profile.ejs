@@ -1,0 +1,33 @@
+<%- include('head.ejs') %>
+
+    <body class="sub_page">
+        <%- include('navbar.ejs') %>
+
+            <section class="cart_section layout_padding">
+
+                <div class="container">
+                    <div class="heading_container heading_center">
+                        <h1>Profil</h1>
+                        <h3>Bienvenue <%= user.customerName %></h3>
+                        <% if (locals.error) { %>
+                            <p style="color: red;">
+                                <%= error %>
+                            </p>
+                            <% } %>
+                        <form action="/profile" method="POST">
+                            <label for="customerName">Name:</label>
+                            <input type="text" class="form-control" name="customerName" value="<%= user.customerName %>" required>
+                            <br>
+                            <label for="customerAddress">Address:</label>
+                            <input type="text" class="form-control" name="customerAddress" value="<%= user.customerAddress %>" required>
+                            <br>
+                            <label for="customerPhone">Phone:</label>
+                            <input type="text" minlength="8" maxlength="8" class="form-control" name="customerPhone" value="<%= user.customerPhone %>" required>
+                            <br>
+                            <input type="submit" class="btn btn-outline-primary" value="Save Changes">
+                        </form>
+                        <p><a href="/logout">Logout</a></p>
+                    </div>
+                </div>
+            </section>
+            <%- include('foot.ejs') %>

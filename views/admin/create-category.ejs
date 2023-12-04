@@ -1,0 +1,31 @@
+<!-- orders.ejs -->
+
+<%- include('../head.ejs') %>
+
+    <body class="sub_page">
+        <style>
+            .table-wrapper {
+                width: 100%;
+            }
+        </style>
+        <%- include('admin-navbar.ejs') %>
+            <section class="orders_section layout_padding">
+
+                <div class="container">
+                    <div class="heading_container heading_center">
+                        <h2>Ajouter une categorie au menu</h2>
+                    </div>
+                    <form action="/api/menuCategories" method="POST">
+
+                        <div class="form-group">
+                            <label for="description">Nom:</label>
+                            <input type="text" class="form-control" name="categoryName" required>
+                            <br>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-primary w-100">Ajouter Categorie</button>
+
+                    </form>
+                </div>
+            </section>
+            <%- include('../foot.ejs') %>

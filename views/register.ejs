@@ -1,0 +1,79 @@
+<%- include('head.ejs') %>
+
+    <body class="sub_page">
+        <%- include('navbar.ejs') %>
+
+            <section class="cart_section layout_padding">
+
+                <div class="container">
+                    <div class="heading_container heading_center">
+                        <h1>Inscription</h1>
+                        <% if (locals.error) { %>
+                            <p style="color: red;">
+                                <%= locals.error %>
+                            </p>
+                            <% } %>
+                                <form action="/register" method="POST" onsubmit="return validateForm()">
+                                    <label for="customerName">Name:</label>
+                                    <input type="text" name="customerName" id="customerName" class="form-control" required>
+                                    <span id="nameError" class="error"></span>
+
+                                    <br>
+                                    <label for="customerAddress">Address:</label>
+                                    <input type="text" name="customerAddress" id="customerAddress" class="form-control" required>
+                                    <span id="addressError" class="error"></span>
+
+                                    <br>
+                                    <label for="customerPhone">Phone:</label>
+                                    <input type="text" minlength="8" maxlength="8" name="customerPhone" id="customerPhone" class="form-control" required>
+                                    <span id="phoneError" class="error"></span>
+
+                                    <br>
+                                    <label for="customerPassword">Password:</label>
+                                    <input type="password" minlength="8" name="customerPassword" class="form-control"
+                                        required>
+                                    <br>
+                                    <input type="submit" class="btn btn-outline-primary" value="Register">
+                                </form>
+                                <p>Vous avez déja un compte? <a href="/login">Se connecter</a></p>
+                    </div>
+                </div>
+            </section>
+            <script>
+                function validateForm() {
+                    // Reset error messages
+                    document.getElementById('nameError').textContent = '';
+                    document.getElementById('addressError').textContent = '';
+                    document.getElementById('phoneError').textContent = '';
+
+                    // Get form values
+                    var name = document.getElementById('customerName').value.trim();
+                    var address = document.getElementById('customerAddress').value.trim();
+                    var phone = document.getElementById('customerPhone').value.trim();
+
+                    // Validate name
+                    if (name === '') {
+                        document.getElementById('nameError').textContent = 'Name is required';
+                        return false;
+                    }
+
+                    // Validate address
+                    if (address === '') {
+                        document.getElementById('addressError').textContent = 'Address is required';
+                        return false;
+                    }
+
+                    // Validate phone
+                    // Validate phone
+                    if (phone === '') {
+                        document.getElementById('phoneError').textContent = 'Phone is required';
+                        return false;
+                    }else if (isNaN(phone)){
+                        document.getElementById('phoneError').textContent = 'Numéro de téléphone doit être valide';
+                        return false;
+                    }
+
+                    return true;
+                }
+            </script>
+            <%- include('foot.ejs') %>

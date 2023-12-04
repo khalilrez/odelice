@@ -12,16 +12,32 @@
                     </div>
 
                     <div id="cartContents" class="row p-4"></div>
+                    <% if (user) { %>
+                        <a href="/logout">Logout</a>
+                    <% } else { %>
+                        <a href="/login">Login</a>
+                    <% } %>
                     <div id="customerInfo">
+                        <% if (user) { %>
                         <!-- Input fields for customer information -->
                         <label for="customerName">Nom:</label>
-                        <input type="text" id="customerName" name="customerName" required>
+                        <input type="text" id="customerName" name="customerName" value="<%= user.customerName || '' %>" required>
 
                         <label for="customerAddress">Adresse:</label>
-                        <input type="text" id="customerAddress" name="customerAddress" required>
+                        <input type="text" id="customerAddress" name="customerAddress" value="<%= user.customerAddress || '' %>" required>
 
                         <label for="customerPhone">Téléphone:</label>
-                        <input type="tel" id="customerPhone" name="customerPhone" required>
+                        <input type="tel" id="customerPhone" name="customerPhone" value="<%= user.customerPhone || '' %>" required>
+                        <% } else { %>
+                            <label for="customerName">Nom:</label>
+                            <input type="text" id="customerName" name="customerName"  required>
+    
+                            <label for="customerAddress">Adresse:</label>
+                            <input type="text" id="customerAddress" name="customerAddress"  required>
+    
+                            <label for="customerPhone">Téléphone:</label>
+                            <input type="tel" id="customerPhone" name="customerPhone"  required>
+                            <% } %>
                     </div>
 
                     <div id="cartActions">

@@ -1,6 +1,7 @@
 // app.js
 
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const { Sequelize, DataTypes } = require('sequelize');
 const path = require('path');
@@ -19,6 +20,12 @@ const upload = multer({ storage: storage });
 const app = express();
 const port = 3000;
 app.use('/uploads', express.static('public/uploads'));
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +39,33 @@ const sequelize = new Sequelize('odelice', 'odelice', 'odelice', {
 });
 
 // Models
+const User = sequelize.define('User', {
+    customerId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    customerName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    customerAddress: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    customerPhone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    customerPassword: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
+
+})
+
+
 const Order = sequelize.define('Order', {
     orderId: {
         type: DataTypes.INTEGER,
@@ -129,9 +163,41 @@ sequelize.sync()
         console.error('Error synchronizing models with the database:', err);
     });
 
-// Routes
 
-// Define a route to get all menu items
+    // MIDDLEWARE
+    const checkAdminCredentials = (req, res, next) => {
+        const { user } = req.session;
+    
+        // Check if user has admin credentials
+        if (user && user.customerName === 'admin' && user.customerPhone === '00000000') {
+            // User has admin credentials, proceed to the next middleware or route
+            next();
+        } else {
+            // User does not have admin credentials, redirect or send an unauthorized response
+            res.status(403).send('Forbidden');
+        }
+    };
+
+    const createDefaultAdminUser = async () => {
+        try {
+            const adminUser = await User.findOrCreate({
+                where: {
+                    customerName: 'admin',
+                    customerPhone: '00000000',
+                },
+                defaults: {
+                    customerAddress: 'Admin Address',  // Add default address if needed
+                    customerPassword: 'adminPassword', // Set a secure default password
+                }
+            });
+    
+            console.log('Default admin user created:', adminUser[0].get());
+        } catch (error) {
+            console.error('Error creating default admin user:', error);
+        }
+    };
+// Routes
+createDefaultAdminUser();
 app.get('/', async (req, res) => {
     try {
         const menuItems = await MenuItem.findAll({ include: [MenuCategory] });
@@ -145,7 +211,7 @@ app.get('/', async (req, res) => {
     }
 });
 app.get('/cart', async (req, res) => {
-    res.render('cart', { pageTitle: 'Cart' });
+    res.render('cart', { pageTitle: 'Cart', user: req.session.user });
 });
 
 // Define Menu Page
@@ -161,7 +227,7 @@ app.get('/menu', async (req, res) => {
 });
 
 // Show all Orders Page
-app.get('/admin/orders', async (req, res) => {
+app.get('/admin/orders',checkAdminCredentials, async (req, res) => {
     try {
         // Fetch orders with associated menu items and notes
         const orders = await Order.findAll({
@@ -179,6 +245,29 @@ app.get('/admin/orders', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+app.get('/admin', async (req, res) => {
+    res.redirect("/admin/orders")
+});
+
+// Create Menu Item Page
+app.get('/admin/createMenuItem',checkAdminCredentials, async (req, res) => {
+    try {
+        // Fetch categories from the database
+        const categories = await MenuCategory.findAll();
+
+        // Render the page with the categories
+        res.render('admin/create-item', { categories });
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Create Menu Item Page
+app.get('/admin/createCategory',checkAdminCredentials, (req, res) => {
+
+    res.render('admin/create-category');
+});
 
 // Create OrderItem
 app.get('/order/:itemId', async (req, res) => {
@@ -193,22 +282,6 @@ app.get('/order/:itemId', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
-// Create Menu Item Page
-app.get('/admin/createMenuItem', async (req, res) => {
-    try {
-        // Fetch categories from the database
-        const categories = await MenuCategory.findAll();
-
-        // Render the page with the categories
-        res.render('admin/create-item', { categories });
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-
 
 
 
@@ -265,7 +338,7 @@ app.post('/api/menuItems', upload.single('image'), async (req, res) => {
         });
 
         // Respond with the created MenuItem
-        res.json(menuItem);
+        res.redirect("/admin/createMenuItem");
     } catch (error) {
         // Handle errors
         console.error(error);
@@ -278,7 +351,7 @@ app.post('/api/menuCategories', async (req, res) => {
     try {
         const { categoryName } = req.body;
         const newCategory = await MenuCategory.create({ categoryName });
-        res.json(newCategory);
+        res.redirect("/admin/createCategory");
     } catch (err) {
         console.error('Error creating menu category:', err);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -342,6 +415,114 @@ app.get('/api/order-status', async (req, res) => {
     }
 });
 
+
+
+// AUTH ROUTES 
+
+app.get('/login', (req, res) => {
+    if (!req.session.user) {
+        res.render('login');
+    } else {
+        res.redirect('/profile')
+    }
+});
+app.get('/profile', (req, res) => {
+    // Check if the user is logged in
+    if (req.session.user) {
+        res.render('profile', { user: req.session.user });
+    } else {
+        // If not logged in, redirect to the login page
+        res.redirect('/login');
+    }
+});
+// Handle form submission for updating profile
+app.post('/profile', async (req, res) => {
+    // Check if the user is logged in
+    if (req.session.user) {
+        const { customerName, customerAddress, customerPhone } = req.body;
+
+        // Update user information in the session
+
+        try {
+            // Update user information in the database
+            await User.update(
+                {
+                    customerName: customerName,
+                    customerAddress: customerAddress,
+                    customerPhone: customerPhone,
+                },
+                {
+                    where: { customerId: req.session.user.customerId }
+                }
+            );
+            req.session.user.customerName = customerName;
+            req.session.user.customerAddress = customerAddress;
+            req.session.user.customerPhone = customerPhone;
+            // Redirect back to the profile page
+            res.redirect('/profile', { error: 'Téléphone déja utilisé' });
+        } catch (error) {
+            console.error('Error updating user in the database:', error);
+            res.render('profile', {
+                user: req.session.user,
+                error: 'Erreur lors de la modification du profil..'
+            });
+        }
+    } else {
+        // If not logged in, redirect to the login page
+        res.redirect('/login');
+    }
+});
+app.post('/login', async (req, res) => {
+    const { customerPhone, customerPassword } = req.body;
+
+    try {
+        const user = await User.findOne({
+            where: {
+                customerPhone: customerPhone,
+                customerPassword: customerPassword
+            }
+        });
+
+        if (user) {
+            req.session.user = user;
+            res.redirect('/');
+        } else {
+            res.render('login', { error: 'Téléphone ou mot de passe incorrect' });
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.render('login', { error: 'Internal Server Error' });
+    }
+
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', async (req, res) => {
+    const { customerName, customerAddress, customerPhone, customerPassword } = req.body;
+
+    try {
+        const newUser = await User.create({
+            customerName,
+            customerAddress,
+            customerPhone,
+            customerPassword,
+        });
+
+        req.session.user = newUser;
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.render('register', { locals: { error: "Erreur d'inscription. veuillez réessayer" } });
+    }
+});
 
 
 // Start the server
