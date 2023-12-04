@@ -1,0 +1,157 @@
+<%- include('head.ejs') %>
+
+    <body class="sub_page">
+        <%- include('navbar.ejs') %>
+
+            <section class="cart_section layout_padding">
+
+                <div class="container">
+                    <div class="heading_container heading_center">
+
+                        <h2>Votre Panier</h2>
+                    </div>
+
+                    <div id="cartContents" class="row p-4"></div>
+                    <div id="customerInfo">
+                        <!-- Input fields for customer information -->
+                        <label for="customerName">Nom:</label>
+                        <input type="text" id="customerName" name="customerName" required>
+
+                        <label for="customerAddress">Adresse:</label>
+                        <input type="text" id="customerAddress" name="customerAddress" required>
+
+                        <label for="customerPhone">Téléphone:</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required>
+                    </div>
+
+                    <div id="cartActions">
+                        <button type="button" class="btn btn-outline-primary " onclick="checkout()">Payer</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="resetCart()">Vider le
+                            panier</button>
+
+                        <p id="totalPrice">Total: </p>
+                    </div>
+
+                    <hr>
+                    <div id="orderStatus">
+                        <label for="checkPhoneNumber">Numéro de téléphone:</label>
+                        <input type="tel" id="checkPhoneNumber" name="checkPhoneNumber" required>
+                        <button type="button" class="btn btn-outline-info" onclick="checkOrderStatus()">Vérifier l'état
+                            de la commande</button>
+                        <div id="orderStatusResult"></div>
+                    </div>
+
+
+                </div>
+            </section>
+
+            <script>
+                function updateCart() {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    if (cart.length === 0) {
+                        document.getElementById('cartContents').innerHTML = '<h3> Votre Panier est vide</h3>';
+                        document.getElementById('cartActions').style.display = "none";
+                    } else {
+
+                        document.getElementById('cartContents').innerHTML = `${cart.map(item => `<div class ="col-4"><pre><h4>${item.itemName} : </h4>\n${item.notes} \n -------------</pre></div>`).join('')}`;
+
+                        // Update total price
+                        const totalPrice = cart.reduce((total, item) => total + parseFloat(item.price), 0);
+                        document.getElementById('totalPrice').innerText = `Total: ${totalPrice} D.T`;
+
+                    }
+                }
+
+                function resetCart() {
+                    localStorage.removeItem('cart');
+                    updateCart(); // Update the displayed cart
+                }
+
+                function checkout() {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                    if (cart.length === 0) {
+                        alert('Votre panier est vide. Ajoutez des éléments avant de passer à la caisse.');
+                        return;
+                    }
+
+                    // Extract relevant data from each cart item
+                    const orderItems = cart.map(item => {
+                        return {
+                            menuItemId: item.itemId,
+                            notes: item.notes || 'Aucune note spécifiée',
+                        };
+                    });
+
+                    // Calculate total order price
+                    const orderTotal = cart.reduce((total, item) => total + parseFloat(item.price), 0);
+
+                    const customerName = document.getElementById('customerName').value;
+                    const customerAddress = document.getElementById('customerAddress').value;
+                    const customerPhone = document.getElementById('customerPhone').value
+                    // Prepare data for the POST request
+                    const postData = {
+                        orderTotal,
+                        orderItems,
+                        customerName,
+                        customerAddress,
+                        customerPhone,
+                    };
+
+                    // Send POST request to create the order
+                    fetch('/api/orders', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(postData),
+                    })
+                        .then(response => response.json())
+                        .then(orderWithItemsAndNotes => {
+                            // Handle the response, e.g., show a confirmation message
+                            alert('Votre commande a été passée avec succès!');
+                            // Optionally, you can clear the cart after a successful order
+                            localStorage.removeItem('cart');
+                            updateCart(); // Update the displayed cart
+                        })
+                        .catch(error => {
+                            console.error('Error during checkout:', error);
+                            alert('Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard.');
+                        });
+                }
+
+                function checkOrderStatus() {
+                    const phoneNumber = document.getElementById('checkPhoneNumber').value;
+
+                    // Send GET request to fetch the order status
+                    fetch(`/api/order-status?phone=${phoneNumber}`)
+                        .then(response => response.json())
+                        .then(orders => {
+                            // Display the order status
+                            const orderStatusResult = document.getElementById('orderStatusResult');
+                            if (orders.length === 0) {
+                                orderStatusResult.innerHTML = '<p>Aucune commande trouvée pour ce numéro de téléphone.</p>';
+                            } else {
+                                const orderDetails = orders.map(order => {
+                                    let pendingOrNot = "Complet"
+                                    if (order.status === "pending") {
+                                        console.log(true)
+                                        pendingOrNot = "En cours de traitement"
+                                    }
+                                    return `<p>Commande ${order.orderId} - Total: ${order.orderTotal} D.T - Status : ${pendingOrNot}</p>`;
+                                }).join('');
+                                orderStatusResult.innerHTML = orderDetails;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error checking order status:', error);
+                            alert('Une erreur est survenue lors de la vérification de l\'état de la commande. Veuillez réessayer plus tard.');
+                        });
+                }
+
+
+                // Initial update
+                updateCart();
+            </script>
+
+            <%- include('foot.ejs') %>
