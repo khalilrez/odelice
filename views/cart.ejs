@@ -1,61 +1,107 @@
 <%- include('head.ejs') %>
 
     <body class="sub_page">
-        <%- include('navbar.ejs') %>
+        <style>
 
+            #cartContents {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+        
+            #customerInfo, #cartActions, #orderStatus {
+                margin-bottom: 20px;
+            }
+        
+            #customerInfo label {
+                display: block;
+                margin-bottom: 5px;
+            }
+        
+            #customerInfo input {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
+        
+            #customerInfo button {
+                padding: 10px;
+                margin-right: 10px;
+            }
+        
+            #totalPrice {
+                padding: 10px;
+                font-weight: bold;
+                font-size: xx-large;
+                float: right;
+            }
+        
+            #orderStatusResult {
+                margin-top: 10px;
+            }
+        </style>
+        
+        <%- include('navbar.ejs') %>
+            <div class="heading_container heading_center bg-dark p-5 text-white">
+                <h1 class="banner-text">Votre Panier</h1>
+            </div>
+            <div class="wave-container bg-dark" style="height: 5vh;"></div>
             <section class="cart_section layout_padding">
 
                 <div class="container">
-                    <div class="heading_container heading_center">
-
-                        <h2>Votre Panier</h2>
-                    </div>
-
                     <div id="cartContents" class="row p-4"></div>
                     <% if (user) { %>
-                        <a href="/logout">Logout</a>
-                    <% } else { %>
-                        <a href="/login">Login</a>
-                    <% } %>
-                    <div id="customerInfo">
-                        <% if (user) { %>
-                        <!-- Input fields for customer information -->
-                        <label for="customerName">Nom:</label>
-                        <input type="text" id="customerName" name="customerName" value="<%= user.customerName || '' %>" required>
-
-                        <label for="customerAddress">Adresse:</label>
-                        <input type="text" id="customerAddress" name="customerAddress" value="<%= user.customerAddress || '' %>" required>
-
-                        <label for="customerPhone">Téléphone:</label>
-                        <input type="tel" id="customerPhone" name="customerPhone" value="<%= user.customerPhone || '' %>" required>
+                        <a class="btn btn-outline-primary" href="/logout">Déconnexion</a>
                         <% } else { %>
-                            <label for="customerName">Nom:</label>
-                            <input type="text" id="customerName" name="customerName"  required>
-    
-                            <label for="customerAddress">Adresse:</label>
-                            <input type="text" id="customerAddress" name="customerAddress"  required>
-    
-                            <label for="customerPhone">Téléphone:</label>
-                            <input type="tel" id="customerPhone" name="customerPhone"  required>
+                            <a class="btn btn-outline-primary" href="/login">Connexion</a>
                             <% } %>
-                    </div>
+                                <div id="customerInfo">
+                                    <% if (user) { %>
+                                        <!-- Input fields for customer information -->
+                                        <label for="customerName">Nom:</label>
+                                        <input type="text" id="customerName" name="customerName"
+                                            value="<%= user.customerName || '' %>" required>
 
-                    <div id="cartActions">
-                        <button type="button" class="btn btn-outline-primary " onclick="checkout()">Payer</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="resetCart()">Vider le
-                            panier</button>
+                                        <label for="customerAddress">Adresse:</label>
+                                        <input type="text" id="customerAddress" name="customerAddress"
+                                            value="<%= user.customerAddress || '' %>" required>
 
-                        <p id="totalPrice">Total: </p>
-                    </div>
+                                        <label for="customerPhone">Téléphone:</label>
+                                        <input type="tel" id="customerPhone" name="customerPhone"
+                                            value="<%= user.customerPhone || '' %>" required>
+                                        <% } else { %>
+                                            <label for="customerName">Nom:</label>
+                                            <input type="text" id="customerName" name="customerName" required>
 
-                    <hr>
-                    <div id="orderStatus">
-                        <label for="checkPhoneNumber">Numéro de téléphone:</label>
-                        <input type="tel" id="checkPhoneNumber" name="checkPhoneNumber" required>
-                        <button type="button" class="btn btn-outline-info" onclick="checkOrderStatus()">Vérifier l'état
-                            de la commande</button>
-                        <div id="orderStatusResult"></div>
-                    </div>
+                                            <label for="customerAddress">Adresse:</label>
+                                            <input type="text" id="customerAddress" name="customerAddress" required>
+
+                                            <label for="customerPhone">Téléphone:</label>
+                                            <input type="tel" id="customerPhone" name="customerPhone" required>
+                                            <% } %>
+                                </div>
+
+                                <div id="cartActions">
+                                    <button type="button" class="btn btn-outline-primary "
+                                        onclick="checkout()">Payer</button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="resetCart()">Vider
+                                        le
+                                        panier</button>
+
+                                    <p id="totalPrice">Total: </p>
+                                </div>
+
+                                <hr>
+                                <div id="orderStatus form-group">
+                                    <h3>Composez votre numéro pour vérifier votre commande</h3>
+                                    <label for="checkPhoneNumber">Numéro de téléphone:</label>
+                                    <input type="tel" id="checkPhoneNumber" name="checkPhoneNumber" class="form-control mb-4" required>
+                                    <button type="button" class="btn btn-outline-info"
+                                        onclick="checkOrderStatus()">Vérifier l'état
+                                        de la commande</button>
+                                    <div id="orderStatusResult"></div>
+                                </div>
 
 
                 </div>

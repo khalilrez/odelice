@@ -1180,3 +1180,241 @@ a:focus {
 #cooking-div.hidden {
   display: none;
 }
+
+
+
+
+
+
+
+
+.between-waves{
+  position: relative;
+}
+.floating-dish {
+  overflow-x: hidden;
+  z-index: 2;
+  position: absolute;
+}
+.floating-dish.left {
+  top: 0;
+  left: -5%;
+}
+
+.floating-dish.right {
+  bottom: 0;
+  right: -5%;
+}
+
+.floating-fries {
+  z-index: 2;
+  position: absolute;
+  opacity: 0.7;
+
+}
+
+.floating-fries.left {
+  left: -12%;
+  animation: floating 2s ease-in-out infinite, slide-in-from-left 1s ease-in-out;
+}
+
+.floating-fries.right {
+  right: -12%;
+  animation: floating 2s ease-in-out infinite, slide-in-from-right 1s ease-in-out;
+}
+
+.floating-fries img {
+  width: 30vw;
+
+}
+
+
+@keyframes colorChange {
+  0% {
+    text-decoration: underline;
+  }
+  50% {
+    text-decoration: none;
+  }
+  100% {
+    text-decoration: underline;
+  }
+}
+.animation-right {
+animation: righty 2s ease-in-out;
+}
+
+@keyframes righty {
+0% {
+opacity: 0;
+right: -10%;
+}
+
+100% {
+
+opacity: 1;
+right: -5%;
+}
+
+}
+
+.animation-left {
+
+animation: lefty 2s ease-in-out;
+}
+
+
+@keyframes lefty {
+0% {
+opacity: 0;
+left: -10%;
+}
+
+100% {
+
+opacity: 1;
+left: -5%;
+}
+
+}
+@keyframes slide-in-from-right {
+  0% {
+    transform: translateX(500px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-from-left {
+  0% {
+    transform: translateX(-500px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes floating {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@media (max-width: 767px) {
+  .floating-fries {
+    display: none;
+  }
+  .floating-dish{
+    display: none;
+  }
+}
+
+
+.wave-container {
+  height: 22vh;
+  background-color: #ed028b;
+  position: relative;
+}
+
+.rotate-up {
+  transform: rotate(180deg);
+}
+
+.between-waves {
+  background-color: #ed028b;
+
+}
+
+.wave-container::before {
+  content: "";
+  width: 100%;
+  height: 106px;
+  position: absolute;
+  bottom: -0.3%;
+  left: 0;
+
+  background-size: auto;
+  background-repeat: repeat no-repeat;
+  background-position: 46vw bottom;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1200  105' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 77L50 72C100 68 200 58 300 39C400 20 500 -8 600 1C700 11 800 58 900 77C1000 96 1100 87 1150 82L1200 77V106H1150C1100 106 1000 106 900 106C800 106 700 106 600 106C500 106 400 106 300 106C200 106 100 106 50 106H0V77Z' fill='%23FFFFFF'/></svg>");
+}
+
+@media(max-width:850px) {
+  .wave-container::before {
+    height: 53px
+  }
+}
+
+.banner-text {
+  font-size: 36px; /* Larger base font size for the banner text */
+}
+
+@media (min-width: 576px) {
+  /* Small devices (576px and up) */
+  .banner-text {
+    font-size: 5vw; /* Adjust the multiplier for scaling on small devices */
+  }
+}
+
+@media (min-width: 768px) {
+  /* Medium devices (768px and up) */
+  .banner-text {
+    font-size: 4.5vw; /* Adjust the multiplier for scaling on medium devices */
+  }
+}
+
+@media (min-width: 992px) {
+  /* Large devices (992px and up) */
+  .banner-text {
+    font-size: 3.5vw; /* Adjust the multiplier for scaling on large devices */
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Extra-large devices (1200px and up) */
+  .banner-text {
+    font-size: 3vw; /* Adjust the multiplier for scaling on extra-large devices */
+  }
+}
+
+
+.responsive-text {
+  font-size: 18px; /* Default font size */
+}
+
+@media (min-width: 576px) {
+  /* Small devices (576px and up) */
+  .responsive-text {
+    font-size: 2vw; /* Adjust the multiplier for scaling on small devices */
+  }
+}
+
+@media (min-width: 768px) {
+  /* Medium devices (768px and up) */
+  .responsive-text {
+    font-size: 1.5vw; /* Adjust the multiplier for scaling on medium devices */
+  }
+}
+
+@media (min-width: 992px) {
+  /* Large devices (992px and up) */
+  .responsive-text {
+    font-size: 1vw; /* Adjust the multiplier for scaling on large devices */
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Extra large devices (1200px and up) */
+  .responsive-text {
+    font-size: 0.8vw; /* Adjust the multiplier for scaling on extra large devices */
+  }
+}
