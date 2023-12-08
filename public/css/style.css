@@ -767,7 +767,7 @@ a:focus {
   text-align: center;
   font-family: "Dancing Script", cursive;
   font-size: 6vh;
-  color: #FFF;
+  color: #fff;
   opacity: 0.75;
   animation: pulse 2.5s linear infinite;
 }
@@ -807,7 +807,7 @@ a:focus {
   left: 50%;
   width: 1.5vh;
   height: 1.5vh;
-  background-color: #FFF;
+  background-color: #fff;
   animation: bubble 1.5s cubic-bezier(0.53, 0.16, 0.39, 0.96) 0.55s infinite;
 }
 #cooking-div #cooking .bubble:nth-child(4) {
@@ -855,7 +855,7 @@ a:focus {
   width: 35%;
   height: 20%;
   background-color: transparent;
-  border-top: 1vh solid #FFF;
+  border-top: 1vh solid #fff;
   border-left: 1vh solid transparent;
   border-radius: 100%;
   transform: rotate(20deg) rotateX(0deg) scale(1.3, 0.9);
@@ -866,7 +866,7 @@ a:focus {
   right: 30%;
   width: 50%;
   height: 8%;
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: 0 0 1.4em 1.4em;
   transform-origin: -15% 0;
 }
@@ -884,8 +884,8 @@ a:focus {
   right: 37%;
   width: 40%;
   height: 45%;
-  background-color: #FFF;
-  box-shadow: 0 0 3px 0 #FFF;
+  background-color: #fff;
+  box-shadow: 0 0 3px 0 #fff;
   border-radius: 100%;
   transform-origin: -20% 0;
   animation: fly 2.1s ease-in-out infinite;

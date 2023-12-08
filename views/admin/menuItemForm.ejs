@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= action %> Menu Item</title>
+  </head>
+  <body>
+    <h1><%= action %> Menu Item</h1>
+
+    <form action="/admin/menuItems/<%= action %>" method="post">
+      <label for="itemName">Item Name:</label>
+      <input
+        type="text"
+        id="itemName"
+        name="itemName"
+        value="<%= item ? item.itemName : '' %>"
+        required
+      />
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description">
+<%= item ? item.description : '' %></textarea
+      >
+
+      <label for="price">Price:</label>
+      <input
+        type="text"
+        id="price"
+        name="price"
+        value="<%= item ? item.price : '' %>"
+        required
+      />
+
+      <label for="image">Image URL:</label>
+      <input
+        type="text"
+        id="image"
+        name="image"
+        value="<%= item ? item.image : '' %>"
+      />
+
+      <button type="submit"><%= action %> Item</button>
+    </form>
+  </body>
+</html>

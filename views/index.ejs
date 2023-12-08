@@ -10,15 +10,12 @@
             </h2>
           </div>
 
-          <ul class="filters_menu">
-            <li class="active" data-filter="*">All</li>
-            <% menuCategories.forEach(category=> { %>
-              <li data-filter=".<%= category.categoryName.toLowerCase() %>">
-                <%= category.categoryName %>
-              </li>
-              <% }); %>
-          </ul>
-
+        
+          <div class="btn-box">
+            <a href="/menu">
+              Consulter le menu complet
+            </a>
+          </div>
           <div class="filters-content">
             <div class="row grid">
               <% menuItems.forEach(menuItem=> { %>
@@ -29,7 +26,7 @@
                         <!-- You can replace this image source with the actual image URL from your data -->
                         <img src="<%= menuItem.image %>" alt="<%= menuItem.itemName %>">
                       </div>
-                      <div class="detail-box">
+                      <div class="detail-box" style="height: 200px;">
                         <h5>
                           <%= menuItem.itemName %>
                         </h5>

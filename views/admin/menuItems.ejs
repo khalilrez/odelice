@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Items</title>
+  </head>
+  <body>
+    <h1>Menu Items</h1>
+
+    <ul>
+      <% menuItems.forEach(item => { %>
+      <li>
+        <%= item.itemName %> - <%= item.price %>
+        <a href="/menuItems/<%= item.itemId %>/edit">Edit</a>
+        <a href="/menuItems/<%= item.itemId %>/delete">Delete</a>
+      </li>
+      <% }); %>
+    </ul>
+
+    <a href="/menuItems/new">Add New Item</a>
+  </body>
+</html>

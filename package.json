@@ -11,8 +11,10 @@
     "sequelize": "^6.35.1"
   },
   "scripts": {
-    "start": "nodemon server.js"
-  },
+    "start": "node server.js",
+    "compile:sass": "sass public/css/style.scss public/css/style.css"
+  
+    },
   "name": "odelice",
   "version": "1.0.0",
   "main": "server.js",

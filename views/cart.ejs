@@ -1,219 +1,279 @@
 <%- include('head.ejs') %>
 
-    <body class="sub_page">
-        <style>
+<body class="sub_page">
+  <style>
+    #cartContents {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
 
-            #cartContents {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-bottom: 20px;
-            }
-        
-            #customerInfo, #cartActions, #orderStatus {
-                margin-bottom: 20px;
-            }
-        
-            #customerInfo label {
-                display: block;
-                margin-bottom: 5px;
-            }
-        
-            #customerInfo input {
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 10px;
-                box-sizing: border-box;
-            }
-        
-            #customerInfo button {
-                padding: 10px;
-                margin-right: 10px;
-            }
-        
-            #totalPrice {
-                padding: 10px;
-                font-weight: bold;
-                font-size: xx-large;
-                float: right;
-            }
-        
-            #orderStatusResult {
-                margin-top: 10px;
-            }
-        </style>
-        
-        <%- include('navbar.ejs') %>
-            <div class="heading_container heading_center bg-dark p-5 text-white">
-                <h1 class="banner-text">Votre Panier</h1>
-            </div>
-            <div class="wave-container bg-dark" style="height: 5vh;"></div>
-            <section class="cart_section layout_padding">
+    #customerInfo,
+    #cartActions,
+    #orderStatus {
+      margin-bottom: 20px;
+    }
 
-                <div class="container">
-                    <div id="cartContents" class="row p-4"></div>
-                    <% if (user) { %>
-                        <a class="btn btn-outline-primary" href="/logout">Déconnexion</a>
-                        <% } else { %>
-                            <a class="btn btn-outline-primary" href="/login">Connexion</a>
-                            <% } %>
-                                <div id="customerInfo">
-                                    <% if (user) { %>
-                                        <!-- Input fields for customer information -->
-                                        <label for="customerName">Nom:</label>
-                                        <input type="text" id="customerName" name="customerName"
-                                            value="<%= user.customerName || '' %>" required>
+    #customerInfo label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-                                        <label for="customerAddress">Adresse:</label>
-                                        <input type="text" id="customerAddress" name="customerAddress"
-                                            value="<%= user.customerAddress || '' %>" required>
+    #customerInfo input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
 
-                                        <label for="customerPhone">Téléphone:</label>
-                                        <input type="tel" id="customerPhone" name="customerPhone"
-                                            value="<%= user.customerPhone || '' %>" required>
-                                        <% } else { %>
-                                            <label for="customerName">Nom:</label>
-                                            <input type="text" id="customerName" name="customerName" required>
+    #customerInfo button {
+      padding: 10px;
+      margin-right: 10px;
+    }
 
-                                            <label for="customerAddress">Adresse:</label>
-                                            <input type="text" id="customerAddress" name="customerAddress" required>
+    #totalPrice {
+      padding: 10px;
+      font-weight: bold;
+      font-size: xx-large;
+      float: right;
+    }
 
-                                            <label for="customerPhone">Téléphone:</label>
-                                            <input type="tel" id="customerPhone" name="customerPhone" required>
-                                            <% } %>
-                                </div>
+    #orderStatusResult {
+      margin-top: 10px;
+    }
+  </style>
 
-                                <div id="cartActions">
-                                    <button type="button" class="btn btn-outline-primary "
-                                        onclick="checkout()">Payer</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="resetCart()">Vider
-                                        le
-                                        panier</button>
+  <%- include('navbar.ejs') %>
+  <div class="heading_container heading_center bg-dark p-5 text-white">
+    <h1 class="banner-text">Votre Panier</h1>
+  </div>
+  <div class="wave-container bg-dark" style="height: 5vh"></div>
+  <section class="cart_section layout_padding">
+    <div class="container">
+      <div id="cartContents" class="row p-4"></div>
+      <% if (user) { %>
+      <a class="btn btn-outline-primary" href="/logout">Déconnexion</a>
+      <% } else { %>
+      <a class="btn btn-outline-primary" href="/login">Connexion</a>
+      <% } %>
+      <div id="customerInfo">
+        <% if (user) { %>
+        <!-- Input fields for customer information -->
+        <label for="customerName">Nom:</label>
+        <input
+          type="text"
+          id="customerName"
+          name="customerName"
+          value="<%= user.customerName || '' %>"
+          required
+        />
 
-                                    <p id="totalPrice">Total: </p>
-                                </div>
+        <label for="customerAddress">Adresse:</label>
+        <input
+          type="text"
+          id="customerAddress"
+          name="customerAddress"
+          value="<%= user.customerAddress || '' %>"
+          required
+        />
 
-                                <hr>
-                                <div id="orderStatus form-group">
-                                    <h3>Composez votre numéro pour vérifier votre commande</h3>
-                                    <label for="checkPhoneNumber">Numéro de téléphone:</label>
-                                    <input type="tel" id="checkPhoneNumber" name="checkPhoneNumber" class="form-control mb-4" required>
-                                    <button type="button" class="btn btn-outline-info"
-                                        onclick="checkOrderStatus()">Vérifier l'état
-                                        de la commande</button>
-                                    <div id="orderStatusResult"></div>
-                                </div>
+        <label for="customerPhone">Téléphone:</label>
+        <input
+          type="tel"
+          id="customerPhone"
+          name="customerPhone"
+          value="<%= user.customerPhone || '' %>"
+          required
+        />
+        <% } else { %>
+        <label for="customerName">Nom:</label>
+        <input type="text" id="customerName" name="customerName" required />
 
+        <label for="customerAddress">Adresse:</label>
+        <input
+          type="text"
+          id="customerAddress"
+          name="customerAddress"
+          required
+        />
 
-                </div>
-            </section>
+        <label for="customerPhone">Téléphone:</label>
+        <input type="tel" id="customerPhone" name="customerPhone" required />
+        <% } %>
+      </div>
 
-            <script>
-                function updateCart() {
-                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                    if (cart.length === 0) {
-                        document.getElementById('cartContents').innerHTML = '<h3> Votre Panier est vide</h3>';
-                        document.getElementById('cartActions').style.display = "none";
-                    } else {
+      <div id="cartActions">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          onclick="checkout()"
+        >
+          Payer
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          onclick="resetCart()"
+        >
+          Vider le panier
+        </button>
 
-                        document.getElementById('cartContents').innerHTML = `${cart.map(item => `<div class ="col-4"><pre><h4>${item.itemName} : </h4>\n${item.notes} \n -------------</pre></div>`).join('')}`;
+        <p id="totalPrice">Total:</p>
+      </div>
 
-                        // Update total price
-                        const totalPrice = cart.reduce((total, item) => total + parseFloat(item.price), 0);
-                        document.getElementById('totalPrice').innerText = `Total: ${totalPrice} D.T`;
+      <hr />
+      <div id="orderStatus form-group">
+        <h3>Composez votre numéro pour vérifier votre commande</h3>
+        <label for="checkPhoneNumber">Numéro de téléphone:</label>
+        <input
+          type="tel"
+          id="checkPhoneNumber"
+          name="checkPhoneNumber"
+          class="form-control mb-4"
+          required
+        />
+        <button
+          type="button"
+          class="btn btn-outline-info"
+          onclick="checkOrderStatus()"
+        >
+          Vérifier l'état de la commande
+        </button>
+        <div id="orderStatusResult"></div>
+      </div>
+    </div>
+  </section>
 
-                    }
+  <script>
+    function updateCart() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) {
+        document.getElementById("cartContents").innerHTML =
+          "<h3> Votre Panier est vide</h3>";
+        document.getElementById("cartActions").style.display = "none";
+        document.getElementById("customerInfo").style.display = "none";
+      } else {
+        document.getElementById("cartContents").innerHTML = `${cart
+          .map(
+            (item) =>
+              `<div class ="col-4"><pre><h4>${item.itemName} : </h4>\n${item.notes} \n -------------</pre></div>`
+          )
+          .join("")}`;
+
+        // Update total price
+        const totalPrice = cart.reduce(
+          (total, item) => total + parseFloat(item.price),
+          0
+        );
+        document.getElementById(
+          "totalPrice"
+        ).innerText = `Total: ${totalPrice} D.T`;
+      }
+    }
+
+    function resetCart() {
+      localStorage.removeItem("cart");
+      updateCart(); // Update the displayed cart
+    }
+
+    function checkout() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      if (cart.length === 0) {
+        alert(
+          "Votre panier est vide. Ajoutez des éléments avant de passer à la caisse."
+        );
+        return;
+      }
+
+      // Extract relevant data from each cart item
+      const orderItems = cart.map((item) => {
+        return {
+          menuItemId: item.itemId,
+          notes: item.notes || "Aucune note spécifiée",
+        };
+      });
+
+      // Calculate total order price
+      const orderTotal = cart.reduce(
+        (total, item) => total + parseFloat(item.price),
+        0
+      );
+
+      const customerName = document.getElementById("customerName").value;
+      const customerAddress = document.getElementById("customerAddress").value;
+      const customerPhone = document.getElementById("customerPhone").value;
+      // Prepare data for the POST request
+      const postData = {
+        orderTotal,
+        orderItems,
+        customerName,
+        customerAddress,
+        customerPhone,
+      };
+
+      // Send POST request to create the order
+      fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      })
+        .then((response) => response.json())
+        .then((orderWithItemsAndNotes) => {
+          // Handle the response, e.g., show a confirmation message
+          alert("Votre commande a été passée avec succès!");
+          // Optionally, you can clear the cart after a successful order
+          localStorage.removeItem("cart");
+          updateCart(); // Update the displayed cart
+        })
+        .catch((error) => {
+          console.error("Error during checkout:", error);
+          alert(
+            "Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard."
+          );
+        });
+    }
+
+    function checkOrderStatus() {
+      const phoneNumber = document.getElementById("checkPhoneNumber").value;
+
+      // Send GET request to fetch the order status
+      fetch(`/api/order-status?phone=${phoneNumber}`)
+        .then((response) => response.json())
+        .then((orders) => {
+          // Display the order status
+          const orderStatusResult =
+            document.getElementById("orderStatusResult");
+          if (orders.length === 0) {
+            orderStatusResult.innerHTML =
+              "<p>Aucune commande trouvée pour ce numéro de téléphone.</p>";
+          } else {
+            const orderDetails = orders
+              .map((order) => {
+                let pendingOrNot = "Complet";
+                if (order.status === "pending") {
+                  console.log(true);
+                  pendingOrNot = "En cours de traitement";
                 }
+                return `<p>Commande ${order.orderId} - Total: ${order.orderTotal} D.T - Status : ${pendingOrNot}</p>`;
+              })
+              .join("");
+            orderStatusResult.innerHTML = orderDetails;
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking order status:", error);
+          alert(
+            "Une erreur est survenue lors de la vérification de l'état de la commande. Veuillez réessayer plus tard."
+          );
+        });
+    }
 
-                function resetCart() {
-                    localStorage.removeItem('cart');
-                    updateCart(); // Update the displayed cart
-                }
+    // Initial update
+    updateCart();
+  </script>
 
-                function checkout() {
-                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-                    if (cart.length === 0) {
-                        alert('Votre panier est vide. Ajoutez des éléments avant de passer à la caisse.');
-                        return;
-                    }
-
-                    // Extract relevant data from each cart item
-                    const orderItems = cart.map(item => {
-                        return {
-                            menuItemId: item.itemId,
-                            notes: item.notes || 'Aucune note spécifiée',
-                        };
-                    });
-
-                    // Calculate total order price
-                    const orderTotal = cart.reduce((total, item) => total + parseFloat(item.price), 0);
-
-                    const customerName = document.getElementById('customerName').value;
-                    const customerAddress = document.getElementById('customerAddress').value;
-                    const customerPhone = document.getElementById('customerPhone').value
-                    // Prepare data for the POST request
-                    const postData = {
-                        orderTotal,
-                        orderItems,
-                        customerName,
-                        customerAddress,
-                        customerPhone,
-                    };
-
-                    // Send POST request to create the order
-                    fetch('/api/orders', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(postData),
-                    })
-                        .then(response => response.json())
-                        .then(orderWithItemsAndNotes => {
-                            // Handle the response, e.g., show a confirmation message
-                            alert('Votre commande a été passée avec succès!');
-                            // Optionally, you can clear the cart after a successful order
-                            localStorage.removeItem('cart');
-                            updateCart(); // Update the displayed cart
-                        })
-                        .catch(error => {
-                            console.error('Error during checkout:', error);
-                            alert('Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard.');
-                        });
-                }
-
-                function checkOrderStatus() {
-                    const phoneNumber = document.getElementById('checkPhoneNumber').value;
-
-                    // Send GET request to fetch the order status
-                    fetch(`/api/order-status?phone=${phoneNumber}`)
-                        .then(response => response.json())
-                        .then(orders => {
-                            // Display the order status
-                            const orderStatusResult = document.getElementById('orderStatusResult');
-                            if (orders.length === 0) {
-                                orderStatusResult.innerHTML = '<p>Aucune commande trouvée pour ce numéro de téléphone.</p>';
-                            } else {
-                                const orderDetails = orders.map(order => {
-                                    let pendingOrNot = "Complet"
-                                    if (order.status === "pending") {
-                                        console.log(true)
-                                        pendingOrNot = "En cours de traitement"
-                                    }
-                                    return `<p>Commande ${order.orderId} - Total: ${order.orderTotal} D.T - Status : ${pendingOrNot}</p>`;
-                                }).join('');
-                                orderStatusResult.innerHTML = orderDetails;
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error checking order status:', error);
-                            alert('Une erreur est survenue lors de la vérification de l\'état de la commande. Veuillez réessayer plus tard.');
-                        });
-                }
-
-
-                // Initial update
-                updateCart();
-            </script>
-
-            <%- include('foot.ejs') %>
+  <%- include('foot.ejs') %>
+</body>

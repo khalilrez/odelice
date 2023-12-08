@@ -1,52 +1,54 @@
 <%- include('head.ejs') %>
 <body class="sub_page">
-<%- include('navbar.ejs') %>
-<section class="food_section layout_padding">
+  <%- include('navbar.ejs') %>
+  <section class="food_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
-        <h2>
-          Notre Menu
-        </h2>
+        <h2>Notre Menu</h2>
       </div>
-  
+
       <ul class="filters_menu">
         <li class="active" data-filter="*">All</li>
         <% menuCategories.forEach(category => { %>
-          <li data-filter=".<%= category.categoryName.toLowerCase() %>"><%= category.categoryName %></li>
+        <li data-filter=".<%= category.categoryName.toLowerCase() %>">
+          <%= category.categoryName %>
+        </li>
         <% }); %>
       </ul>
-  
+
       <div class="filters-content">
         <div class="row grid">
           <% menuItems.forEach(menuItem => { %>
-            <div class="col-sm-6 col-lg-4 all <%= menuItem.MenuCategory.categoryName.toLowerCase() %>">
-              <div class="box">
-                <div>
-                  <div class="img-box">
-                    <!-- You can replace this image source with the actual image URL from your data -->
-                    <img src="<%= menuItem.image %>" alt="<%= menuItem.itemName %>">
-                  </div>
-                  <div class="detail-box">
-                    <h5>
-                      <%= menuItem.itemName %>
-                    </h5>
-                    <p>
-                      <%= menuItem.description %>
-                    </p>
-                    <div class="options">
-                      <h6>
-                        <%= menuItem.price %> D.T
-                      </h6>
-                      <a href="order/<%= menuItem.itemId %>"><i class="fa fa-shopping-cart text-white"></i></a>
-                    </div>
+          <div
+            class="col-sm-6 col-lg-4 all <%= menuItem.MenuCategory.categoryName.toLowerCase() %>"
+          >
+            <div class="box">
+              <div>
+                <div class="img-box">
+                  <!-- You can replace this image source with the actual image URL from your data -->
+                  <img
+                    src="<%= menuItem.image %>"
+                    alt="<%= menuItem.itemName %>"
+                  />
+                </div>
+                <div class="detail-box" style="height: 200px">
+                  <h5><%= menuItem.itemName %></h5>
+                  <p><%= menuItem.description %></p>
+                  <div class="options">
+                    <h6><%= menuItem.price %> D.T</h6>
+                    <a href="order/<%= menuItem.itemId %>"
+                      ><i class="fa fa-shopping-cart text-white"></i
+                    ></a>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
           <% }); %>
         </div>
       </div>
     </div>
   </section>
-  
-<%- include('foot.ejs') %>
+
+  <%- include('foot.ejs') %>
+</body>
