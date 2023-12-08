@@ -1,47 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= action %> Menu Item</title>
-  </head>
-  <body>
-    <h1><%= action %> Menu Item</h1>
+<!-- orders.ejs -->
 
-    <form action="/admin/menuItems/<%= action %>" method="post">
-      <label for="itemName">Item Name:</label>
-      <input
-        type="text"
-        id="itemName"
-        name="itemName"
-        value="<%= item ? item.itemName : '' %>"
-        required
-      />
+<%- include('../head.ejs') %>
 
-      <label for="description">Description:</label>
-      <textarea id="description" name="description">
-<%= item ? item.description : '' %></textarea
-      >
+  <body class="sub_page">
+    <style>
+      .table-wrapper {
+        width: 100%;
+      }
+    </style>
+    <%- include('admin-navbar.ejs') %>
+      <section class="orders_section layout_padding">
 
-      <label for="price">Price:</label>
-      <input
-        type="text"
-        id="price"
-        name="price"
-        value="<%= item ? item.price : '' %>"
-        required
-      />
+        <div class="container">
+          <div class="heading_container heading_center">
+            <h2>Ajouter un produit au menu</h2>
+          </div>
+          <form action="/admin/menuItems/<%= locals.item ? locals.item.itemId +" /" : '' %><%= action %>" method="post" enctype="multipart/form-data">
+            <div class="form-group">
 
-      <label for="image">Image URL:</label>
-      <input
-        type="text"
-        id="image"
-        name="image"
-        value="<%= item ? item.image : '' %>"
-      />
+              <label for="itemName">Nom Produit:</label>
+              <input type="text" name="itemName" class="form-control"
+                value="<%= locals.item ? locals.item.itemName : '' %>" required>
+              <br>
+            </div>
+            <div class="form-group">
 
-      <button type="submit"><%= action %> Item</button>
-    </form>
-  </body>
-</html>
+              <label for="description">Description:</label>
+              <input type="text" class="form-control" value="<%= locals.item ? locals.item.description : '' %>" name="description" required>
+              <br>
+            </div>
+            <div class="form-group">
+
+              <label for="price">Prix:</label>
+              <input type="number" class="form-control" name="price" value="<%= locals.item ? locals.item.price : '' %>" required>
+              <br>
+            </div>
+            <div class="form-group">
+
+              <label for="categoryId">Catégorie:</label><br>
+              <select class="form-control form-control-lg" name="categoryId" required>
+                <% categories.forEach(category=> { %>
+                  <option value="<%= category.categoryId %>" <%= (locals.item.categoryId == category.categoryId) ? 'selected' : '' %> >
+                    <%= category.categoryName %>
+                  </option>
+                  <% }); %>
+              </select>
+              <br>
+              <br>
+            </div>
+            <div class="form-group">
+
+              <label for="image">Image:</label>
+              <input type="file" class="form-control-file" name="image">
+              <% if (locals.item) { %>
+                <img src="<%= locals.item.image %>" alt="">
+                <% } %>
+              <br>
+            </div>
+
+            <button type="submit" class="btn btn-outline-primary w-100">Modifier produit</button>
+
+          </form>
+        </div>
+      </section>
+      <%- include('../foot.ejs') %>

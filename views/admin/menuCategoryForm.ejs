@@ -1,25 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= action %> Menu Category</title>
-  </head>
-  <body>
-    <h1><%= action %> Menu Category</h1>
+<!-- orders.ejs -->
 
-    <form action="/admin/menuCategories/<%= action %>" method="post">
-      <label for="categoryName">Category Name:</label>
-      <input
-        type="text"
-        id="categoryName"
-        name="categoryName"
-        value="<%= category ? category.categoryName : '' %>"
-        required
-      />
+<%- include('../head.ejs') %>
 
-      <button type="submit"><%= action %> Category</button>
-    </form>
-  </body>
-</html>
+  <body class="sub_page">
+    <style>
+      .table-wrapper {
+        width: 100%;
+      }
+    </style>
+    <%- include('admin-navbar.ejs') %>
+      <section class="orders_section layout_padding">
+
+        <div class="container">
+          <div class="heading_container heading_center">
+            <h2>Ajouter une categorie au menu</h2>
+          </div>
+
+          <form action="/admin/menuCategories/<%= action %>" method="post">
+            <div class="form-group">
+              <label for="categoryName">Category Name:</label>
+              <input type="text" id="categoryName" name="categoryName" class="form-control"
+                value="<%= category ? category.categoryName : '' %>" required />
+            </div>
+            <button type="submit" class="btn btn-outline-primary">
+              <%= action %> Category
+            </button>
+          </form>
+        </div>
+      </section>
+      <%- include('../foot.ejs') %>

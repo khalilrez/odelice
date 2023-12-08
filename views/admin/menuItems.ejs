@@ -1,24 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Menu Items</title>
-  </head>
-  <body>
-    <h1>Menu Items</h1>
+<%- include('../head.ejs') %>
 
-    <ul>
-      <% menuItems.forEach(item => { %>
-      <li>
-        <%= item.itemName %> - <%= item.price %>
-        <a href="/menuItems/<%= item.itemId %>/edit">Edit</a>
-        <a href="/menuItems/<%= item.itemId %>/delete">Delete</a>
-      </li>
-      <% }); %>
-    </ul>
+  <body class="sub_page">
+    <style>
+      .menuItemsList {
+        list-style: none;
+        padding: 0;
+      }
 
-    <a href="/menuItems/new">Add New Item</a>
-  </body>
-</html>
+      .menuItemsListItem {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    </style>
+    <%- include('admin-navbar.ejs') %>
+      <section class="orders_section layout_padding">
+        <div class="container">
+          <h1>Menu</h1>
+          <a href="/admin/createMenuItem" class="btn btn-outline-primary">Ajouter produit</a>
+
+          <ul class="menuItemsList">
+            <% menuItems.forEach(item=> { %>
+              <li class="menuItemsListItem">
+                <%= item.itemName %> - <%= item.price %>
+                    <div>
+                      <a class="text-success" href="/admin/menuItems/<%= item.itemId %>/edit">Edit</a>
+                      <a class="text-danger" onclick="confirmDelete('<%= item.itemName %>','<%= item.itemId %>')">Delete</a>
+                    </div>
+              </li>
+             
+              <% }); %>
+          </ul>
+        </div>
+      </section>
+      <script>
+        function confirmDelete(itemName,itemId) {
+          if (confirm("Vous confimer la suppression de \" "+itemName+" \" ?") == true) {
+            window.location.href = "/admin/menuItems/"+itemId+"/delete"
+          } else {
+            console.log("delete cancelled");
+          }
+        }
+      </script>
+
+        <%- include('../foot.ejs') %>
