@@ -1,63 +1,155 @@
 <%- include('head.ejs') %>
+    <style>
+
+    </style>
 
     <body class="sub_page">
         <%- include('navbar.ejs') %>
-        <section class="cart_section layout_padding">
-            <div class="container">
-                <div class="heading_container heading_center">
-    
-                <!-- Your order form goes here, you can use the menuItem details -->
-                <h2>Cht7eb fih?</h2>
-                <form method="post" onsubmit="return false;">
-                    <!-- Include hidden input fields to pass menuItem details -->
-                    <input type="hidden" name="itemName" value="<%= menuItem.itemName %>">
-                    <input type="hidden" name="itemId" value="<%= menuItem.itemId %>">
-                    <input type="hidden" name="description" value="<%= menuItem.description %>">
-                    <input type="hidden" name="price" value="<%= menuItem.price %>">
-                    <input type="hidden" name="image" value="<%= menuItem.image %>">
+            <section class="cart_section layout_padding">
+                <div class="container">
+                    <div class="heading_center row">
+                        <div class="col-12 col-md-6 flex-column align-items-center text-center justify-content-center">
+                            <h1>
+                                <%= menuItem.itemName %>
+                            </h1>
+                            <img src="<%= menuItem.image %>" class="w-75 my-5" alt="Image du produit">
+                            <p>
+                                <%= menuItem.description %>
+                            </p>
+                        </div>
+                        <div class="col-12 col-md-6 ">
+                            <!--  order form -->
+                            <form method="post" onsubmit="return false;" class="d-flex flex-column align-items-center">
+                                <h2>Personnalisez Votre Commande</h2>
 
-                    <!-- Add more input fields for additional order specifications -->
-                    <!-- Boutons radio pour le type de pain -->
-                    <label for="breadType">Type de Pain :</label>
-                    <input type="radio" name="breadType" value="white" checked> Blanc
-                    <input type="radio" name="breadType" value="wholegrain"> Complet
-                    <br>
+                                <!-- Champ pour la Quantité -->
+                                <div class="d-flex">
+                                    <div class="counter">
+                                        <span class="down" onClick='decreaseCount(event, this)'>-</span>
+                                        <input type="text" name="quantity" value="1">
+                                        <span class="up" onClick='increaseCount(event, this)'>+</span>
+                                    </div>
+                                </div>
 
-                    <!-- Cases à cocher pour la Garniture -->
-                    <label for="garniture">Garniture :</label>
-                    <input type="checkbox" name="garniture" value="lettuce"> Laitue
-                    <input type="checkbox" name="garniture" value="tomato"> Tomate
-                    <!-- Ajoutez plus d'options de garniture si nécessaire -->
-                    <br>
+                                <br>
+                                <!-- Include hidden input fields to pass menuItem details -->
+                                <input type="hidden" name="itemName" value="<%= menuItem.itemName %>">
+                                <input type="hidden" name="itemId" value="<%= menuItem.itemId %>">
+                                <input type="hidden" name="description" value="<%= menuItem.description %>">
+                                <input type="hidden" name="price" value="<%= menuItem.price %>">
+                                <input type="hidden" name="image" value="<%= menuItem.image %>">
 
-                    <!-- Cases à cocher pour la Sauce -->
-                    <label for="sauce">Sauce :</label>
-                    <input type="checkbox" name="sauce" value="mayo"> Mayo
-                    <input type="checkbox" name="sauce" value="mustard"> Moutarde
-                    <!-- Ajoutez plus d'options de sauce si nécessaire -->
-                    <br>
+                                <!-- Add more input fields for additional order specifications -->
+                                <div class="border p-3 rounded w-75 mb-2">
+                                    <!-- Boutons radio pour le type de pain -->
+                                    <label for="breadType">Type de Pain :</label>
+                                    <input type="radio" name="breadType" value="white" checked> Blanc
+                                    <input type="radio" name="breadType" value="wholegrain"> Complet
+                                    <br>
+                                </div>
+                                <!-- Cases à cocher pour la Garniture -->
+                                <div class="border p-3 rounded w-75 mb-2">
+                                    <label for="garniture">Garniture :</label>
+                                    <input type="checkbox" name="garniture" value="lettuce"> Laitue
+                                    <input type="checkbox" name="garniture" value="tomato"> Tomate
+                                    <!-- Ajoutez plus d'options de garniture si nécessaire -->
+                                    <br>
+                                </div>
 
-                    <!-- Champ pour la Quantité -->
-                    <label for="quantity">Quantité :</label>
-                    <input type="number" name="quantity">
-                    <br>
+                                <!-- Cases à cocher pour la Sauce -->
+                                <div class="border p-3 rounded w-75 mb-2">
+                                    <label for="sauce">Sauce :</label>
+                                    <label>
+                                        <input type="checkbox" name="sauce" value="mayo"> Mayo
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="sauce" value="mayo"> Harissa
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="sauce" value="mayo"> Moutarde
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="sauce" value="mayo"> Ketchup
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="sauce" value="mayo"> BBQ
+                                    </label>
+                                    <!-- Ajoutez plus d'options de sauce si nécessaire -->
+                                    <br>
+                                </div>
 
-                    <!-- Cases à cocher pour les Extras -->
-                    <label for="extras">Extras :</label>
-                    <input type="checkbox" name="extras" value="cheese"> Fromage
-                    <input type="checkbox" name="extras" value="bacon"> Bacon
-                    <!-- Ajoutez plus d'options d'extras si nécessaire -->
-                    <br>
+                                <!-- Cases à cocher pour les Extras -->
+                                <div class="border p-3 rounded w-75 mb-2">
+                                    <label for="extras">Suppléments :</label><br>
+                                    <label>
+                                        <input type="checkbox" name="extras" value="0.700"> Oeuf (0.700)
+                                    </label><br>
 
-                    <!-- Zone de texte pour les Notes -->
-                    <label for="notes">Notes :</label>
-                    <textarea name="notes" rows="4" cols="50"></textarea>
-                    <br>
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.200"> Mozzarella (1.200)
+                                    </label><br>
 
-                    <button type="button" class="btn btn-secondary" onclick="submitOrder()">Ajouter au panier</button>
-                </form>
-            </div>
-            </div>
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.500"> Jambon fume (1.500)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.500"> Omelette (1.500)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.700"> Gruyère (1.700)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.700"> Raclette (1.700)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.700"> Fromage Blanc (1.700)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="1.700"> Edam (1.700)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.000"> Thon (2.000)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.500"> Bacon (2.500)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.500"> Poulet Curry (2.500)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.500"> Viande Hachee (2.500)
+                                    </label><br>
+
+                                    <label>
+                                        <input type="checkbox" name="extras" value="3.000"> Steak (3.000)
+                                    </label><br>
+
+                                    <!-- Ajoutez plus d'options d'extras si nécessaire -->
+                                    <br>
+                                </div>
+                                <!-- Zone de texte pour les Notes -->
+                                <div class="border p-3 rounded w-75 mb-2">
+
+                                    <label for="notes">Notes :</label>
+                                    <textarea name="notes" class="border-1 rounded" rows="4" cols="30"></textarea>
+                                    <br>
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" onclick="submitOrder()">Ajouter au
+                                    panier</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </section>
             <!-- Add this script in your EJS file -->
             <script>
@@ -67,23 +159,39 @@
                     const garniture = Array.from(document.querySelectorAll('input[name="garniture"]:checked')).map(checkbox => checkbox.value);
                     const sauce = Array.from(document.querySelectorAll('input[name="sauce"]:checked')).map(checkbox => checkbox.value);
                     const quantity = document.querySelector('input[name="quantity"]').value;
-                    const extras = Array.from(document.querySelectorAll('input[name="extras"]:checked')).map(checkbox => checkbox.value);
+                    const extrasValues = Array.from(document.querySelectorAll('input[name="extras"]:checked')).map(checkbox => checkbox.value);
+                   
+                    
+                    const checkboxes = Array.from(document.querySelectorAll('input[name="extras"]'))
+
+                    const checkedExtras = [];
+
+                    for (const checkbox of checkboxes) {
+                        if (checkbox.checked) {
+                            const labelText = checkbox.parentElement.textContent.trim();
+                            checkedExtras.push(labelText);
+                        }
+                    } console.log(checkedExtras)
+
                     const notes = document.querySelector('textarea[name="notes"]').value;
                     const itemName = document.querySelector('input[name="itemName"]').value;
                     const itemId = document.querySelector('input[name="itemId"]').value;
                     const itemPrice = document.querySelector('input[name="price"]').value;
 
 
-
+                    let newPrice = parseFloat(itemPrice) ;
+                    for(const extraPrice of extrasValues){
+                        newPrice+= parseFloat(extraPrice)
+                    }
 
                     // Concatenate notes
-                    const concatenatedNotes = `Pain: ${breadType}\nGarniture: ${garniture.join(', ')}\nSauce: ${sauce.join(', ')}\nQuantité: ${quantity}\nExtras: ${extras.join(', ')}\nNotes: ${notes}`;
+                    const concatenatedNotes = `Pain: ${breadType}\nGarniture: ${garniture.join(', ')}\nSauce: ${sauce.join(', ')}\nQuantité: ${quantity}\nExtras: ${checkedExtras.join(', ')}\nNotes: ${notes}`;
 
                     // Create orderItem object
                     const orderItem = {
                         itemId: itemId, // Add the actual value from your data
                         itemName: itemName,
-                        price: itemPrice,
+                        price: newPrice*quantity, 
                         notes: concatenatedNotes,
                     };
 
@@ -98,7 +206,7 @@
 
                     // Log or send the orderItem as needed
                     console.log(orderItem);
-                    alert("Ajouté au panier")
+                    alert("Commande ajoutée au panier")
                     window.location.href = '/menu'
                 }
             </script>

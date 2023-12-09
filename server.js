@@ -6,12 +6,15 @@ const bodyParser = require("body-parser");
 const { Sequelize, DataTypes } = require("sequelize");
 const path = require("path");
 const multer = require("multer");
+const uuid = require('uuid');
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/uploads/"); // Specify the path where you want to store uploaded images
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Use a unique filename
+    const randomFileName = uuid.v4(); // Generate a random string
+    cb(null, randomFileName + file.originalname.substring(file.originalname.lastIndexOf('.'))); // Use a unique filename
   },
 });
 const upload = multer({ storage: storage });
@@ -277,7 +280,7 @@ app.get("/admin/createCategory", checkAdminCredentials, (req, res) => {
 });
 
 // Create OrderItem
-app.get("/order/:itemId",checkAdminCredentials, async (req, res) => {
+app.get("/order/:itemId", async (req, res) => {
   try {
     // Fetch the menuItem based on the itemId from the URL parameter
     const menuItem = await MenuItem.findByPk(req.params.itemId);
@@ -296,22 +299,23 @@ app.get("/admin/menuItems", checkAdminCredentials, async (req, res) => {
 });
 
 // Add New Menu Item
-app.get("/admin/menuItems/new",checkAdminCredentials, (req, res) => {
+app.get("/admin/menuItems/new", checkAdminCredentials, (req, res) => {
   res.render("admin/menuItemForm", { action: "new" });
 });
 
 
 // Edit Menu Item
-app.get("/admin/menuItems/:itemId/edit",checkAdminCredentials, async (req, res) => {
+app.get("/admin/menuItems/:itemId/edit", checkAdminCredentials, async (req, res) => {
   const categories = await MenuCategory.findAll();
   const item = await MenuItem.findByPk(req.params.itemId);
-  res.render("admin/menuItemForm", { action: "Edit", item,categories });
+  res.render("admin/menuItemForm", { action: "Edit", item, categories });
 });
 
 app.post("/admin/menuItems/:itemId/edit", upload.single("image"), async (req, res) => {
   // Handle the uploaded image and other form data
   const { itemName, description, price, categoryId } = req.body;
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+  const randomFileName = req.file ? req.file.filename : null;
+  const imagePath = randomFileName ? `/uploads/${randomFileName}` : null;
 
   try {
     // Find the MenuItem by ID
@@ -341,34 +345,34 @@ app.post("/admin/menuItems/:itemId/edit", upload.single("image"), async (req, re
   }
 });
 // Delete Menu Item
-app.get("/admin/menuItems/:itemId/delete",checkAdminCredentials, async (req, res) => {
+app.get("/admin/menuItems/:itemId/delete", checkAdminCredentials, async (req, res) => {
   await MenuItem.destroy({ where: { itemId: req.params.itemId } });
   res.redirect("/admin/menuItems");
 });
 
 // List Menu Categories
-app.get("/admin/menuCategories",checkAdminCredentials, async (req, res) => {
+app.get("/admin/menuCategories", checkAdminCredentials, async (req, res) => {
   const menuCategories = await MenuCategory.findAll();
   res.render("admin/menuCategories", { menuCategories });
 });
 
 // Add New Menu Category
-app.get("/admin/menuCategories/new",checkAdminCredentials, (req, res) => {
+app.get("/admin/menuCategories/new", checkAdminCredentials, (req, res) => {
   res.render("admin/menuCategoryForm", { action: "Add" });
 });
 
-app.post("/admin/menuCategories/new",checkAdminCredentials, async (req, res) => {
+app.post("/admin/menuCategories/new", checkAdminCredentials, async (req, res) => {
   await MenuCategory.create(req.body);
   res.redirect("/admin/menuCategories");
 });
 
 // Edit Menu Category
-app.get("/admin/menuCategories/:categoryId/edit",checkAdminCredentials, async (req, res) => {
+app.get("/admin/menuCategories/:categoryId/edit", checkAdminCredentials, async (req, res) => {
   const category = await MenuCategory.findByPk(req.params.categoryId);
   res.render("admin/menuCategoryForm", { action: "Edit", category });
 });
 
-app.post("/admin/menuCategories/:categoryId/edit",checkAdminCredentials, async (req, res) => {
+app.post("/admin/menuCategories/:categoryId/edit", checkAdminCredentials, async (req, res) => {
   await MenuCategory.update(req.body, {
     where: { categoryId: req.params.categoryId },
   });
@@ -376,7 +380,7 @@ app.post("/admin/menuCategories/:categoryId/edit",checkAdminCredentials, async (
 });
 
 // Delete Menu Category
-app.get("/admin/menuCategories/:categoryId/delete",checkAdminCredentials, async (req, res) => {
+app.get("/admin/menuCategories/:categoryId/delete", checkAdminCredentials, async (req, res) => {
   await MenuCategory.destroy({ where: { categoryId: req.params.categoryId } });
   res.redirect("/admin/menuCategories");
 });
@@ -429,7 +433,9 @@ app.post("/api/orders", async (req, res) => {
 app.post("/api/menuItems", upload.single("image"), async (req, res) => {
   // Handle the uploaded image and other form data
   const { itemName, description, price, categoryId } = req.body;
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const randomFileName = req.file ? req.file.filename : null;
+  const imagePath = randomFileName ? `/uploads/${randomFileName}` : null;
 
   try {
     // Create a new MenuItem with the image path

@@ -49,9 +49,9 @@ INSERT INTO menuItems (itemName,description, price, createdAt, updatedAt, MenuCa
 ('Chocolat plenty', 'Nutella + Noisette + Amande filet + Pistache + banane', '9.000', NOW(), NOW(), 5);
 
 INSERT INTO menuItems (itemName, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Eau 0.5', '1.000', NOW(), NOW(), 6),
-('Eau 1.5', '1.500', NOW(), NOW(), 6),
-('Boisson Gazeuze', '1.700', NOW(), NOW(), 6);
+('Eau 0.5', '1.000', NOW(), NOW(), 7),
+('Eau 1.5', '1.500', NOW(), NOW(), 7),
+('Boisson Gazeuze', '1.700', NOW(), NOW(), 7);
 
 INSERT INTO menuItems (itemName, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Assiette Frites', '1.000', NOW(), NOW(), 7);
+('Assiette Frites', '1.000', NOW(), NOW(), 6);

@@ -156,7 +156,7 @@
         document.getElementById("cartContents").innerHTML = `${cart
           .map(
             (item) =>
-              `<div class ="col-4"><pre><h4>${item.itemName} : </h4>\n${item.notes} \n -------------</pre></div>`
+              `<div class ="col-4"><pre><h4>${item.itemName} : </h4>\n${item.notes} \n ------------- ${item.price} D.T</pre></div>`
           )
           .join("")}`;
 
