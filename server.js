@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.use("/uploads", express.static("public/uploads"));
 app.use(
   session({
