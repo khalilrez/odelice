@@ -96,6 +96,14 @@ const Order = sequelize.define("Order", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  deliveryOption: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  numberOfDrinks: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 
   // New fields for order status and completion time
   status: {
@@ -394,6 +402,8 @@ app.post("/api/orders", async (req, res) => {
       customerName,
       customerAddress,
       customerPhone,
+      numberOfDrinks,
+      deliveryOption
     } = req.body;
 
     // Create the order with customer information
@@ -402,6 +412,8 @@ app.post("/api/orders", async (req, res) => {
       customerName,
       customerAddress,
       customerPhone,
+      numberOfDrinks,
+      deliveryOption
     });
 
     // Add menu items to the order with notes

@@ -82,58 +82,59 @@
                                 <div class="border p-3 rounded w-75 mb-2">
                                     <label for="extras">Suppléments :</label><br>
                                     <label>
-                                        <input type="checkbox" name="extras" value="0.700"> Oeuf (0.700)
+                                        <input type="checkbox" name="extras" value="1.000"> Oeuf (1.000)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.200"> Mozzarella (1.200)
+                                        <input type="checkbox" name="extras" value="2.000"> Mozzarella (2.000)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.500"> Jambon fume (1.500)
+                                        <input type="checkbox" name="extras" value="2.000"> Jambon (2.000)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.500"> Omelette (1.500)
+                                        <input type="checkbox" name="extras" value="2.500"> Omelette (2.500)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.700"> Gruyère (1.700)
+                                        <input type="checkbox" name="extras" value="2.500"> Gruyère (2.500)
+                                    </label><br>
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.500"> Edam (2.500)
+                                    </label><br>
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.500"> Fromage Blanc (2.500)
+                                    </label><br>
+                                    
+                                    <label>
+                                        <input type="checkbox" name="extras" value="2.500"> Thon (2.500)
+                                    </label><br>
+                                    <label>
+                                        <input type="checkbox" name="extras" value="3.000"> Bacon (3.000)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.700"> Raclette (1.700)
+                                        <input type="checkbox" name="extras" value="3.00"> Escalope Curry (3.000)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.700"> Fromage Blanc (1.700)
+                                        <input type="checkbox" name="extras" value="3.000"> Viande Hachee (3.000)
                                     </label><br>
 
                                     <label>
-                                        <input type="checkbox" name="extras" value="1.700"> Edam (1.700)
+                                        <input type="checkbox" name="extras" value="4.000"> Steak (4.000)
                                     </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.000"> Thon (2.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Bacon (2.500)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Poulet Curry (2.500)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Viande Hachee (2.500)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="3.000"> Steak (3.000)
-                                    </label><br>
-
-                                    <!-- Ajoutez plus d'options d'extras si nécessaire -->
+                                    <% if (menuItem.MenuCategoryCategoryId == '1' || menuItem.MenuCategoryCategoryId == '2') { %>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.000" checked> Frites (2.000)
+                                        </label><br>
+                                    <% } else { %>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.000"> Frites (2.000)
+                                        </label><br>
+                                     <% } %>
+                                 
                                     <br>
                                 </div>
                                 <!-- Zone de texte pour les Notes -->
@@ -176,6 +177,7 @@
                     const notes = document.querySelector('textarea[name="notes"]').value;
                     const itemName = document.querySelector('input[name="itemName"]').value;
                     const itemId = document.querySelector('input[name="itemId"]').value;
+                    const itemImage = document.querySelector('input[name="image"]').value;
                     const itemPrice = document.querySelector('input[name="price"]').value;
 
 
@@ -193,6 +195,7 @@
                         itemName: itemName,
                         price: newPrice*quantity, 
                         notes: concatenatedNotes,
+                        image: itemImage
                     };
 
                     // Retrieve existing cart from localStorage or create an empty array

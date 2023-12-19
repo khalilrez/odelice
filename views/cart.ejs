@@ -1,279 +1,366 @@
 <%- include('head.ejs') %>
 
-<body class="sub_page">
-  <style>
-    #cartContents {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 20px;
-    }
-
-    #customerInfo,
-    #cartActions,
-    #orderStatus {
-      margin-bottom: 20px;
-    }
-
-    #customerInfo label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    #customerInfo input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-    }
-
-    #customerInfo button {
-      padding: 10px;
-      margin-right: 10px;
-    }
-
-    #totalPrice {
-      padding: 10px;
-      font-weight: bold;
-      font-size: xx-large;
-      float: right;
-    }
-
-    #orderStatusResult {
-      margin-top: 10px;
-    }
-  </style>
-
-  <%- include('navbar.ejs') %>
-  <div class="heading_container heading_center bg-dark p-5 text-white">
-    <h1 class="banner-text">Votre Panier</h1>
-  </div>
-  <div class="wave-container bg-dark" style="height: 5vh"></div>
-  <section class="cart_section layout_padding">
-    <div class="container">
-      <div id="cartContents" class="row p-4"></div>
-      <% if (user) { %>
-      <a class="btn btn-outline-primary" href="/logout">Déconnexion</a>
-      <% } else { %>
-      <a class="btn btn-outline-primary" href="/login">Connexion</a>
-      <% } %>
-      <div id="customerInfo">
-        <% if (user) { %>
-        <!-- Input fields for customer information -->
-        <label for="customerName">Nom:</label>
-        <input
-          type="text"
-          id="customerName"
-          name="customerName"
-          value="<%= user.customerName || '' %>"
-          required
-        />
-
-        <label for="customerAddress">Adresse:</label>
-        <input
-          type="text"
-          id="customerAddress"
-          name="customerAddress"
-          value="<%= user.customerAddress || '' %>"
-          required
-        />
-
-        <label for="customerPhone">Téléphone:</label>
-        <input
-          type="tel"
-          id="customerPhone"
-          name="customerPhone"
-          value="<%= user.customerPhone || '' %>"
-          required
-        />
-        <% } else { %>
-        <label for="customerName">Nom:</label>
-        <input type="text" id="customerName" name="customerName" required />
-
-        <label for="customerAddress">Adresse:</label>
-        <input
-          type="text"
-          id="customerAddress"
-          name="customerAddress"
-          required
-        />
-
-        <label for="customerPhone">Téléphone:</label>
-        <input type="tel" id="customerPhone" name="customerPhone" required />
-        <% } %>
-      </div>
-
-      <div id="cartActions">
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          onclick="checkout()"
-        >
-          Payer
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          onclick="resetCart()"
-        >
-          Vider le panier
-        </button>
-
-        <p id="totalPrice">Total:</p>
-      </div>
-
-      <hr />
-      <div id="orderStatus form-group">
-        <h3>Composez votre numéro pour vérifier votre commande</h3>
-        <label for="checkPhoneNumber">Numéro de téléphone:</label>
-        <input
-          type="tel"
-          id="checkPhoneNumber"
-          name="checkPhoneNumber"
-          class="form-control mb-4"
-          required
-        />
-        <button
-          type="button"
-          class="btn btn-outline-info"
-          onclick="checkOrderStatus()"
-        >
-          Vérifier l'état de la commande
-        </button>
-        <div id="orderStatusResult"></div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    function updateCart() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      if (cart.length === 0) {
-        document.getElementById("cartContents").innerHTML =
-          "<h3> Votre Panier est vide</h3>";
-        document.getElementById("cartActions").style.display = "none";
-        document.getElementById("customerInfo").style.display = "none";
-      } else {
-        document.getElementById("cartContents").innerHTML = `${cart
-          .map(
-            (item) =>
-              `<div class ="col-4"><pre><h4>${item.itemName} : </h4>\n${item.notes} \n ------------- ${item.price} D.T</pre></div>`
-          )
-          .join("")}`;
-
-        // Update total price
-        const totalPrice = cart.reduce(
-          (total, item) => total + parseFloat(item.price),
-          0
-        );
-        document.getElementById(
-          "totalPrice"
-        ).innerText = `Total: ${totalPrice} D.T`;
-      }
-    }
-
-    function resetCart() {
-      localStorage.removeItem("cart");
-      updateCart(); // Update the displayed cart
-    }
-
-    function checkout() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      if (cart.length === 0) {
-        alert(
-          "Votre panier est vide. Ajoutez des éléments avant de passer à la caisse."
-        );
-        return;
+  <body class="sub_page">
+    <style>
+      #cartContents {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 20px;
       }
 
-      // Extract relevant data from each cart item
-      const orderItems = cart.map((item) => {
-        return {
-          menuItemId: item.itemId,
-          notes: item.notes || "Aucune note spécifiée",
-        };
-      });
+      #customerInfo,
+      #drinkOptions,
+      #cartActions,
+      #orderStatus {
+        margin-bottom: 20px;
+      }
 
-      // Calculate total order price
-      const orderTotal = cart.reduce(
-        (total, item) => total + parseFloat(item.price),
-        0
-      );
+      #customerInfo label {
+        display: block;
+        margin-bottom: 5px;
+      }
 
-      const customerName = document.getElementById("customerName").value;
-      const customerAddress = document.getElementById("customerAddress").value;
-      const customerPhone = document.getElementById("customerPhone").value;
-      // Prepare data for the POST request
-      const postData = {
-        orderTotal,
-        orderItems,
-        customerName,
-        customerAddress,
-        customerPhone,
-      };
 
-      // Send POST request to create the order
-      fetch("/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      })
-        .then((response) => response.json())
-        .then((orderWithItemsAndNotes) => {
-          // Handle the response, e.g., show a confirmation message
-          alert("Votre commande a été passée avec succès!");
-          // Optionally, you can clear the cart after a successful order
+      #customerInfo input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      #customerInfo button {
+        padding: 10px;
+        margin-right: 10px;
+      }
+
+      #drinkOptions label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+
+      #drinkOptions input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
+
+      #drinkOptions button {
+        padding: 10px;
+        margin-right: 10px;
+      }
+
+      #totalPrice {
+        padding: 10px;
+        font-weight: bold;
+        font-size: xx-large;
+        float: right;
+      }
+
+      #orderStatusResult {
+        margin-top: 10px;
+      }
+    </style>
+
+    <%- include('navbar.ejs') %>
+      <div class="heading_container heading_center bg-dark p-5 text-white">
+        <h1 class="banner-text">Votre Panier</h1>
+      </div>
+      <div class="wave-container bg-dark" style="height: 5vh"></div>
+      <section class="cart_section layout_padding">
+        <div class="container">
+          <div id="cartContents" class="row p-4"></div>
+          <% if (user) { %>
+            <a class="btn btn-outline-primary" href="/logout">Déconnexion</a>
+            <% } else { %>
+              <a class="btn btn-outline-primary" href="/login">Connexion</a>
+              <% } %>
+                <div id="customerInfo" class="border rounded p-3 mb-5 mt-3 shadow">
+                  <% if (user) { %>
+                    <!-- Input fields for customer information -->
+                    <label for="customerName">Nom et Prenom:</label>
+                    <input type="text" id="customerName" name="customerName" class="form-control"
+                      value="<%= user.customerName || '' %>" required />
+
+                    <label for="customerAddress">Adresse:</label>
+                    <input type="text" id="customerAddress" name="customerAddress" class="form-control"
+                      value="<%= user.customerAddress || '' %>" required />
+
+                    <label for="customerPhone">Téléphone:</label>
+                    <input type="tel" id="customerPhone" name="customerPhone" class="form-control"
+                      value="<%= user.customerPhone || '' %>" required />
+                    <% } else { %>
+                      <label for="customerName">Nom et Prenom:</label>
+                      <input type="text" id="customerName" name="customerName" class="form-control" required />
+
+                      <label for="customerAddress">Adresse:</label>
+                      <select name="customerAddress" id="customerAddress" class="custom-select w-100">
+                        <option selected>Choisir votre adresse</option>
+                        <option value="Hammam-Lif">Hammam-Lif</option>
+                        <option value="Ezzahra">Ezzahra</option>
+                        <option value="Hammam-Chatt">Hammam Chatt</option>
+                        <option value="Boumhal">Boumhal</option>
+
+                      </select>
+
+                      <label for="customerPhone">Téléphone:</label>
+                      <input type="tel" id="customerPhone" name="customerPhone" class="form-control" required />
+                      <% } %>
+                </div>
+
+                <!-- Step 2: Drink and Delivery Options -->
+                <div id="drinkOptions" class="border rounded p-3 mb-5 mt-3 shadow" style="display: none;">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                      onclick="showDrinkQuantity()">
+                    <label class="custom-control-label" for="customSwitch1">Voulez vous ajouter des boissons gazeuzes supplémentaires ?</label>
+                  </div>
+                  <div id="drinkQuantityContainer" style="display: none;">
+                    <label for="drinkQuantity">Nombre de boissons:</label>
+                    <input type="number" id="drinkQuantity" name="drinkQuantity" class="form-control" min="0" onchange="updateCart()"
+                      value="0" />
+                  </div>
+                  <label for="deliveryOption">Option de livraison:</label>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="emporter" name="livraison" class="custom-control-input" value="à emporter" onclick="updateCart()">
+                    <label class="custom-control-label" for="emporter">à emporter</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="domicile" name="livraison" class="custom-control-input" value="Livraison" onclick="updateCart()">
+                    <label class="custom-control-label" for="domicile">Livraison à domicile</label>
+                  </div>
+                </div>
+
+                <div id="cartActions">
+                  <button type="button" id="nextButton" class="btn btn-outline-primary" onclick="showDrinkOptions()">
+                    Continuer
+                  </button>
+                  <button type="button" id="previousButton" class="btn btn-outline-primary" onclick="hideDrinkOptions()"
+                    style="display:none;">
+                    Précédent
+                  </button>
+                  <button type="button" id="checkoutButton" class="btn btn-primary" onclick="checkout()"
+                    style="display:none;">
+                    Payer
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="resetCart()">
+                    Vider le panier
+                  </button>
+
+                  <p id="totalPrice">Total:</p>
+                </div>
+
+                <hr class="my-5" />
+                <div id="orderStatus form-group">
+                  <h3>Composez votre numéro pour vérifier votre commande</h3>
+                  <label for="checkPhoneNumber">Numéro de téléphone:</label>
+                  <input type="tel" id="checkPhoneNumber" name="checkPhoneNumber" class="form-control mb-4" required />
+                  <button type="button" class="btn btn-outline-info" onclick="checkOrderStatus()">
+                    Vérifier l'état de la commande
+                  </button>
+                  <div id="orderStatusResult"></div>
+                </div>
+        </div>
+      </section>
+
+      <script>
+        function showDrinkQuantity() {
+          if (document.getElementById('drinkQuantityContainer').style.display == 'block') {
+            document.getElementById('drinkQuantityContainer').style.display = 'none'
+            document.getElementById('drinkQuantity').value = 0;
+            updateCart()
+          }else{
+            document.getElementById('drinkQuantityContainer').style.display = 'block'
+          }
+        }
+        function showDrinkOptions() {
+          // Hide Step 1 and show Step 2
+          document.getElementById('customerInfo').style.display = 'none';
+          document.getElementById('drinkOptions').style.display = 'block';
+
+          // hide and show buttons
+          document.getElementById('nextButton').style.display = 'none';
+          document.getElementById('previousButton').style.display = 'inline';
+          document.getElementById('checkoutButton').style.display = 'inline';
+        }
+
+
+        function hideDrinkOptions() {
+          // Hide Step 2 and show Step 1
+          document.getElementById('customerInfo').style.display = 'block';
+          document.getElementById('drinkOptions').style.display = 'none';
+
+          // hide and show buttons
+          document.getElementById('nextButton').style.display = 'inline';
+          document.getElementById('previousButton').style.display = 'none';
+          document.getElementById('checkoutButton').style.display = 'none';
+        }
+
+
+        function updateCart() {
+
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          if (cart.length === 0 ) {
+            document.getElementById("cartContents").innerHTML =
+              "<h3> Votre Panier est vide</h3>";
+            document.getElementById("cartActions").style.display = "none";
+            document.getElementById("customerInfo").style.display = "none";
+            document.getElementById('nextButton').style.display = 'none';
+          } else {
+            document.getElementById("cartContents").innerHTML = `${cart
+              .map(
+                (item) =>
+                  `<div class ="col-12 col-md-6 card rounded p-3">
+                <div class="row">
+                  <div class="col-4">
+                    <img src="${item.image}" width="100%">
+                      </div>
+                  <div class="col-8">
+                <pre><h4>${item.itemName} : </h4>\n${item.notes} \n <hr><span class="float-right text-bold"> ${item.price} D.T<span></pre>
+                  </div>
+              </div>
+              </div>`
+              )
+              .join("")}`;
+            // Update total price
+            let totalPrice = cart.reduce(
+              (total, item) => total + parseFloat(item.price),
+              0
+            );
+            
+            if(document.querySelector('input[name="livraison"]:checked')){
+            const deliveryOption = document.querySelector('input[name="livraison"]:checked').value
+            if(deliveryOption == 'Livraison'){
+              totalPrice += 3
+            }
+          }
+          if(document.getElementById('drinkQuantity')){
+            const numberOfDrinks = document.getElementById('drinkQuantity').value;
+            if(numberOfDrinks >0){
+              totalPrice += parseFloat(numberOfDrinks) * 2.5
+            }
+          }
+            document.getElementById(
+              "totalPrice"
+            ).innerText = `Total: ${totalPrice.toFixed(1)} D.T`;
+          }
+        }
+
+        function resetCart() {
           localStorage.removeItem("cart");
           updateCart(); // Update the displayed cart
-        })
-        .catch((error) => {
-          console.error("Error during checkout:", error);
-          alert(
-            "Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard."
-          );
-        });
-    }
+        }
 
-    function checkOrderStatus() {
-      const phoneNumber = document.getElementById("checkPhoneNumber").value;
+        function checkout() {
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-      // Send GET request to fetch the order status
-      fetch(`/api/order-status?phone=${phoneNumber}`)
-        .then((response) => response.json())
-        .then((orders) => {
-          // Display the order status
-          const orderStatusResult =
-            document.getElementById("orderStatusResult");
-          if (orders.length === 0) {
-            orderStatusResult.innerHTML =
-              "<p>Aucune commande trouvée pour ce numéro de téléphone.</p>";
-          } else {
-            const orderDetails = orders
-              .map((order) => {
-                let pendingOrNot = "Complet";
-                if (order.status === "pending") {
-                  console.log(true);
-                  pendingOrNot = "En cours de traitement";
-                }
-                return `<p>Commande ${order.orderId} - Total: ${order.orderTotal} D.T - Status : ${pendingOrNot}</p>`;
-              })
-              .join("");
-            orderStatusResult.innerHTML = orderDetails;
+          if (cart.length === 0) {
+            alert(
+              "Votre panier est vide. Ajoutez des éléments avant de passer à la caisse."
+            );
+            return;
           }
-        })
-        .catch((error) => {
-          console.error("Error checking order status:", error);
-          alert(
-            "Une erreur est survenue lors de la vérification de l'état de la commande. Veuillez réessayer plus tard."
+
+
+          // Extract relevant data from each cart item
+          const orderItems = cart.map((item) => {
+            return {
+              menuItemId: item.itemId,
+              notes: item.notes || "Aucune note spécifiée",
+            };
+          });
+
+          // Calculate total order price
+          let orderTotal = cart.reduce(
+            (total, item) => total + parseFloat(item.price),
+            0
           );
-        });
-    }
 
-    // Initial update
-    updateCart();
-  </script>
+          const numberOfDrinks = document.getElementById('drinkQuantity').value;
+          const deliveryOption = document.querySelector('input[name="livraison"]:checked').value;
+          const customerName = document.getElementById("customerName").value;
+          const customerAddress = document.getElementById("customerAddress").value;
+          const customerPhone = document.getElementById("customerPhone").value;
 
-  <%- include('foot.ejs') %>
-</body>
+          // adjust Order Total to drinks and delivery 
+          orderTotal += (parseFloat(numberOfDrinks) * 2.5);
+          if(deliveryOption == 'Livraison'){
+            orderTotal += 3
+          }
+          // Prepare data for the POST request
+          const postData = {
+            orderTotal,
+            orderItems,
+            customerName,
+            customerAddress,
+            customerPhone,
+            numberOfDrinks,
+            deliveryOption
+          };
+
+          // Send POST request to create the order
+          fetch("/api/orders", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData),
+          })
+            .then((response) => response.json())
+            .then((orderWithItemsAndNotes) => {
+              // Handle the response, e.g., show a confirmation message
+              alert("Votre commande a été passée avec succès!");
+              // Optionally, you can clear the cart after a successful order
+              localStorage.removeItem("cart");
+              updateCart(); // Update the displayed cart
+            })
+            .catch((error) => {
+              console.error("Error during checkout:", error);
+              alert(
+                "Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard."
+              );
+            });
+        }
+
+        function checkOrderStatus() {
+          const phoneNumber = document.getElementById("checkPhoneNumber").value;
+
+          // Send GET request to fetch the order status
+          fetch(`/api/order-status?phone=${phoneNumber}`)
+            .then((response) => response.json())
+            .then((orders) => {
+              // Display the order status
+              const orderStatusResult =
+                document.getElementById("orderStatusResult");
+              if (orders.length === 0) {
+                orderStatusResult.innerHTML =
+                  "<p>Aucune commande trouvée pour ce numéro de téléphone.</p>";
+              } else {
+                const orderDetails = orders
+                  .map((order) => {
+                    let pendingOrNot = "Complet";
+                    if (order.status === "pending") {
+                      console.log(true);
+                      pendingOrNot = "En cours de traitement";
+                    }
+                    return `<p>Commande ${order.orderId} - Total: ${order.orderTotal} D.T - Status : ${pendingOrNot}</p>`;
+                  })
+                  .join("");
+                orderStatusResult.innerHTML = orderDetails;
+              }
+            })
+            .catch((error) => {
+              console.error("Error checking order status:", error);
+              alert(
+                "Une erreur est survenue lors de la vérification de l'état de la commande. Veuillez réessayer plus tard."
+              );
+            });
+        }
+
+        // Initial update
+        updateCart();
+      </script>
+
+      <%- include('foot.ejs') %>
+  </body>

@@ -2,56 +2,56 @@ INSERT INTO menuCategories (categoryName, createdAt, updatedAt) VALUES
 ('Sandwich', NOW(), NOW()),
 ('Panini', NOW(), NOW()),
 ('Hamburger', NOW(), NOW()),
-('Crepe Salee', NOW(), NOW()),
-('Crepe Sucree', NOW(), NOW()),
-('Frites', NOW(), NOW()),
+('Crepe-Salee', NOW(), NOW()),
+('Crepe-Sucree', NOW(), NOW()),
 ('Boissons', NOW(), NOW());
 
 INSERT INTO menuItems (itemName, description, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Sandwich Thon', 'Thon + salade + oeuf cuite + sauce au choix', '4.000', NOW(), NOW(), 1),
-('Sandwich Anglais', 'Jambon fume + salade + oeuf cuite + sauce au choix', '4.000', NOW(), NOW(), 1),
-('Sandwich Chicken', 'Poulet Curry + salade + oeuf cuite + sauce au choix', '5.300', NOW(), NOW(), 1),
-('Sandwich Fermier', 'Poulet Curry + gruyere + salade + Omelette + sauce au choix', '6.500', NOW(), NOW(), 1),
-('Sandwich Double Cheese', 'Poulet curry + oeuf cuite + mozzarella + gruyere, salade + sauce au choix', '7.000', NOW(), NOW(), 1),
-('Sandwich Merguez', 'Merguez + Omelette + Salade + Sauce au choix', '5.000', NOW(), NOW(), 1),
-('Sandwich Royal', 'Viande Hachee + Salade + Oeuf Cuite + Slice + Sauce au choix', '5.500', NOW(), NOW(), 1),
-('Sandwich Steak', 'Steak + Salade + Oeuf Cuite + Slice + sauce au choix', '5.500', NOW(), NOW(), 1),
-('Sandwich La Casa', 'Viande Hachee + Bacon + Raclette + Gruyere + Salade + Oeuf Cuite + Sauce au choix', '9.000', NOW(), NOW(), 1);
+('Sandwich Thon', 'Thon + Omelette Mozzarella + sauce au choix', '5.000', NOW(), NOW(), 1),
+('Sandwich Jambon', 'Jambon + Omelette + sauce au choix', '5.000', NOW(), NOW(), 1),
+('Sandwich Chicken', 'Escalope Curry + Omelette Mozzarella + sauce au choix', '6.500', NOW(), NOW(), 1),
+('Sandwich Double Cheese', 'Escalope Curry + Omelette Mozzarella + Portion Gruyere + sauce au choix', '8.000', NOW(), NOW(), 1),
+('Sandwich Triple Cheese', 'Escalope Curry + Omelette Mozzarella + Portion Gruyere + Edam +  sauce au choix', '9.000', NOW(), NOW(), 1),
+('Sandwich Merguez', 'Merguez + Omelette Mozzarella + Sauce au choix', '6.000', NOW(), NOW(), 1),
+('Sandwich Royal Viande Hachée', 'Viande Hachee + Omelette Mozzarella + Portion Gruyere + Sauce au choix', '7.500', NOW(), NOW(), 1),
+('Sandwich Steak Hachée', 'Steak Hachée + Omelette Mozzarella + Portion Gruyere + sauce au choix', '7.500', NOW(), NOW(), 1),
+('Sandwich Kebda', 'Kebda + Tastira + sauce au choix', '7.500', NOW(), NOW(), 1),
+('Sandwich La Casa', 'Viande Hachee + Omelette Mozzarella + Bacon + Raclette + Gruyere + Sauce au choix', '11.000', NOW(), NOW(), 1);
 
 INSERT INTO menuItems (itemName, description, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Panini Thon', 'Thon + Mozzarella + Laittue + Oignon + Mayo + Ketchup', '3.800', NOW(), NOW(), 2),
-('Panini Jambon Fume', 'Jambon fume + Mozzarella + Laittue + Oignon + Mayo + Ketchup', '3.800', NOW(), NOW(), 2),
-('Panini Omelette', 'Omelette fromage + Mozzarella + Laittue + Oignon + Mayo + Ketchup', '4.000', NOW(), NOW(), 2),
-('Panini Poulet Curry', 'Poulet Curry  + Mozzarella + Laittue + Oignon + Mayo + Ketchup', '4.300', NOW(), NOW(), 2),
-('Panini Viande Hachee', 'Viande Hachee  + Mozzarella + Laittue + Oignon + Mayo + Ketchup', '5.000', NOW(), NOW(), 2);
+('Panini Thon', 'Thon + Mozzarella', '4.500', NOW(), NOW(), 2),
+('Panini Jambon ', 'Jambon + Mozzarella', '4.500', NOW(), NOW(), 2),
+('Panini Omelette', 'Omelette fromage + Mozzarella', '4.500', NOW(), NOW(), 2),
+('Panini Poulet Curry', 'Escalope Curry  + Mozzarella', '5.500', NOW(), NOW(), 2),
+('Panini Royal Viande Hachee', 'Viande Hachee  + Mozzarella4', '6.000', NOW(), NOW(), 2);
 
 INSERT INTO menuItems (itemName, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Cheese Burger', '6.000', NOW(), NOW(), 3),
-('Double Cheese', '7.000', NOW(), NOW(), 3),
-('Double burger cheese', '9.000', NOW(), NOW(), 3);
+('Chicken Burger + Frites', '7.000', NOW(), NOW(), 3),
+('Cheese Burger + Frites', '8.000', NOW(), NOW(), 3),
+('Double Cheese + Frites', '9.000', NOW(), NOW(), 3),
+('Double Burger Double Cheese', '13.000', NOW(), NOW(), 3);
+
 
 INSERT INTO menuItems (itemName, description, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Classique', 'Mozarella + Salade', '3.500', NOW(), NOW(), 4),
-('Normande', 'Jambon fume + mozzarella + legumes saute + salade verte', '5.000', NOW(), NOW(), 4),
-('Ocean', 'Thon + Mozzarella + Legume saute + salade verte', '5.000', NOW(), NOW(), 4),
-('Pizza', 'Thon + Mozzarella + Sauce tomate + Olive + Salade verte', '5.500', NOW(), NOW(), 4),
-('Tunisienne', 'Thon + Mozzarella + oeuf + salade verte', '5.500', NOW(), NOW(), 4),
-('Supreme Fermier', 'Poulet Curry + Mozzarella + Legume saute + Salade verte', '6.000', NOW(), NOW(), 4),
-('Mexicaine', 'Viande hachee + Mozzarella + Legume saute + salade verte', '6.000', NOW(), NOW(), 4),
-('4 Fromages', 'Mozzarella, Edam, Gruyere, Raclette, Sauce fromage, Salade verte', '8.500', NOW(), NOW(), 4);
+('Classique', 'Mozarella', '4.500', NOW(), NOW(), 4),
+('Normande', 'Jambon + mozzarella', '5.500', NOW(), NOW(), 4),
+('Ocean', 'Thon + Mozzarella', '6.000', NOW(), NOW(), 4),
+('Pizza', 'Thon + Mozzarella + Sauce tomate + Olive', '6.500', NOW(), NOW(), 4),
+('Tunisienne', 'Thon + Mozzarella + oeuf ', '6.500', NOW(), NOW(), 4),
+('Supreme Fermier', 'Escalope Curry + Mozzarella', '7.000', NOW(), NOW(), 4),
+('Mexicaine', 'Viande hachee + Mozzarella + Legume saute', '8.000', NOW(), NOW(), 4),
+('4 Fromages', 'Mozzarella + Edam, Gruyere + Raclette', '9.500', NOW(), NOW(), 4);
 
 INSERT INTO menuItems (itemName,description, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Chocolat Said',NULL, '2.500', NOW(), NOW(), 5),
-('Nutella',NULL, '6.000', NOW(), NOW(), 5),
-('Delight', 'Nutella + Banane', '7.500', NOW(), NOW(), 5),
-('Memory', 'Nutella + Amande', '6.700', NOW(), NOW(), 5),
-('Alldry', 'Nutella + Noisette + Amande + Pistache', '8.500', NOW(), NOW(), 5),
-('Chocolat plenty', 'Nutella + Noisette + Amande filet + Pistache + banane', '9.000', NOW(), NOW(), 5);
+('Chocolat Said',NULL, '4.000', NOW(), NOW(), 5),
+('Chocolat Said Amande',NULL, '5.500', NOW(), NOW(), 5),
+('Chocolat Said Noisette',NULL, '5.500', NOW(), NOW(), 5),
+('Chocolat Said Amande et Noisette',NULL, '7.000', NOW(), NOW(), 5),
+('Nutella',NULL, '7.000', NOW(), NOW(), 5),
+('Memory', 'Nutella + Amande', '8.000', NOW(), NOW(), 5),
+('Alldry', 'Nutella + Noisette + Amande + Pistache', '10.000', NOW(), NOW(), 5);
 
 INSERT INTO menuItems (itemName, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Eau 0.5', '1.000', NOW(), NOW(), 7),
-('Eau 1.5', '1.500', NOW(), NOW(), 7),
-('Boisson Gazeuze', '1.700', NOW(), NOW(), 7);
-
-INSERT INTO menuItems (itemName, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
-('Assiette Frites', '1.000', NOW(), NOW(), 6);
+('Eau 0.5', '1.000', NOW(), NOW(), 6),
+('Eau 1.5', '1.500', NOW(), NOW(), 6),
+('Boisson Gazeuze', '2.500', NOW(), NOW(), 6);

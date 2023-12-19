@@ -6,8 +6,8 @@
  */
 :root {
   --blue: #ed028b;
-  --indigo: #6610f2;
-  --purple: #6f42c1;
+  --indigo: #e83e8c;
+  --purple: #e83e8c;
   --pink: #e83e8c;
   --red: #dc3545;
   --orange: #fd7e14;
@@ -2427,8 +2427,8 @@ fieldset:disabled a.btn {
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #0069d9;
-  border-color: #0062cc;
+  background-color: var(--pink);
+  border-color: var(--pink);
 }
 
 .btn-primary:focus, .btn-primary.focus {
