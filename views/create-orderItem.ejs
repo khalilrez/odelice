@@ -1,23 +1,44 @@
 <%- include('head.ejs') %>
-    <style>
-
-    </style>
 
     <body class="sub_page">
         <%- include('navbar.ejs') %>
-            <section class="cart_section layout_padding">
+
+            <section class="cart_section pt-3 pb-5 food_order_section">
                 <div class="container">
+                    <div class="owl-carousel owl-theme">
+                        <div class="item">
+                            <img class="img-fluid" src="https://placehold.co/800x200" alt="">
+                        </div>
+                        <div class="item">
+                            <img class="img-fluid" src="https://placehold.co/800x200" alt="">
+                        </div>
+                    </div>
                     <div class="heading_center row">
                         <div class="col-12 col-md-6 flex-column align-items-center text-center justify-content-center">
                             <h1>
                                 <%= menuItem.itemName %>
                             </h1>
-                            <img src="<%= menuItem.image %>" class="w-75 my-5" alt="Image du produit">
-                            <p>
-                                <%= menuItem.description %>
-                            </p>
+                            <img src="<%= menuItem.image || " https://placehold.co/500" %>" class="w-75 my-5" alt="Image
+                            du produit">
+                                <% if (menuItem.description) { %>
+                                    <div class="card shadow mb-5">
+                                        <div class="card-header">
+                                            Ingrédients
+                                          </div>
+                                    <div class="card-body">
+                                        <%= menuItem.description %>
+                                    </div>
+                                </div>
+
+                                <% } %>
+                        
                         </div>
-                        <div class="col-12 col-md-6 ">
+                        <div class="col-12 col-md-6 frites-graphic-container">
+                            <% if (menuItem.MenuCategoryCategoryId == 1 || menuItem.MenuCategoryCategoryId == 2) { %>
+                            <div class="frites-graphic">
+                                <img src="/images/frites-graphic.png" alt="">
+                            </div>
+                            <% } %>
                             <!--  order form -->
                             <form method="post" onsubmit="return false;" class="d-flex flex-column align-items-center">
                                 <h2>Personnalisez Votre Commande</h2>
@@ -37,116 +58,120 @@
                                 <input type="hidden" name="itemId" value="<%= menuItem.itemId %>">
                                 <input type="hidden" name="description" value="<%= menuItem.description %>">
                                 <input type="hidden" name="price" value="<%= menuItem.price %>">
-                                <input type="hidden" name="image" value="<%= menuItem.image %>">
+                                <input type="hidden" name="image" value="<%= menuItem.image || " https://placehold.co/500" %>">
+                                <% if (menuItem.MenuCategoryCategoryId !=6) { %>
 
-                                <!-- Add more input fields for additional order specifications -->
-                                <div class="border p-3 rounded w-75 mb-2">
-                                    <!-- Boutons radio pour le type de pain -->
-                                    <label for="breadType">Type de Pain :</label>
-                                    <input type="radio" name="breadType" value="white" checked> Blanc
-                                    <input type="radio" name="breadType" value="wholegrain"> Complet
-                                    <br>
-                                </div>
-                                <!-- Cases à cocher pour la Garniture -->
-                                <div class="border p-3 rounded w-75 mb-2">
-                                    <label for="garniture">Garniture :</label>
-                                    <input type="checkbox" name="garniture" value="lettuce"> Laitue
-                                    <input type="checkbox" name="garniture" value="tomato"> Tomate
-                                    <!-- Ajoutez plus d'options de garniture si nécessaire -->
-                                    <br>
-                                </div>
 
-                                <!-- Cases à cocher pour la Sauce -->
-                                <div class="border p-3 rounded w-75 mb-2">
-                                    <label for="sauce">Sauce :</label>
-                                    <label>
-                                        <input type="checkbox" name="sauce" value="mayo"> Mayo
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="sauce" value="mayo"> Harissa
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="sauce" value="mayo"> Moutarde
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="sauce" value="mayo"> Ketchup
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="sauce" value="mayo"> BBQ
-                                    </label>
-                                    <!-- Ajoutez plus d'options de sauce si nécessaire -->
-                                    <br>
-                                </div>
+                                    <!-- Add more input fields for additional order specifications -->
+                                    <div class="border p-3 rounded w-75 mb-2">
+                                        <!-- Boutons radio pour le type de pain -->
+                                        <label for="breadType">Type de Pain :</label>
+                                        <input type="radio" name="breadType" value="white" checked> Blanc
+                                        <input type="radio" name="breadType" value="wholegrain"> Complet
+                                        <br>
+                                    </div>
+                                    <!-- Cases à cocher pour la Garniture -->
+                                    <div class="border p-3 rounded w-75 mb-2">
+                                        <label for="garniture">Garniture :</label>
+                                        <input type="checkbox" name="garniture" value="lettuce"> Laitue
+                                        <input type="checkbox" name="garniture" value="tomato"> Tomate
+                                        <!-- Ajoutez plus d'options de garniture si nécessaire -->
+                                        <br>
+                                    </div>
 
-                                <!-- Cases à cocher pour les Extras -->
-                                <div class="border p-3 rounded w-75 mb-2">
-                                    <label for="extras">Suppléments :</label><br>
-                                    <label>
-                                        <input type="checkbox" name="extras" value="1.000"> Oeuf (1.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.000"> Mozzarella (2.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.000"> Jambon (2.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Omelette (2.500)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Gruyère (2.500)
-                                    </label><br>
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Edam (2.500)
-                                    </label><br>
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Fromage Blanc (2.500)
-                                    </label><br>
-                                    
-                                    <label>
-                                        <input type="checkbox" name="extras" value="2.500"> Thon (2.500)
-                                    </label><br>
-                                    <label>
-                                        <input type="checkbox" name="extras" value="3.000"> Bacon (3.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="3.00"> Escalope Curry (3.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="3.000"> Viande Hachee (3.000)
-                                    </label><br>
-
-                                    <label>
-                                        <input type="checkbox" name="extras" value="4.000"> Steak (4.000)
-                                    </label><br>
-                                    <% if (menuItem.MenuCategoryCategoryId == '1' || menuItem.MenuCategoryCategoryId == '2') { %>
+                                    <!-- Cases à cocher pour la Sauce -->
+                                    <div class="border p-3 rounded w-75 mb-2">
+                                        <label for="sauce">Sauce :</label>
                                         <label>
-                                            <input type="checkbox" name="extras" value="2.000" checked> Frites (2.000)
-                                        </label><br>
-                                    <% } else { %>
+                                            <input type="checkbox" name="sauce" value="mayo"> Mayo
+                                        </label>
                                         <label>
-                                            <input type="checkbox" name="extras" value="2.000"> Frites (2.000)
+                                            <input type="checkbox" name="sauce" value="mayo"> Harissa
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="sauce" value="mayo"> Sauce Fromage
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="sauce" value="mayo"> Ketchup
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="sauce" value="mayo"> BBQ
+                                        </label>
+                                        <!-- Ajoutez plus d'options de sauce si nécessaire -->
+                                        <br>
+                                    </div>
+
+                                    <!-- Cases à cocher pour les Extras -->
+                                    <div class="border p-3 rounded w-75 mb-2">
+                                        <label for="extras">Suppléments :</label><br>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="1.000"> Oeuf (1.000)
                                         </label><br>
-                                     <% } %>
-                                 
-                                    <br>
-                                </div>
-                                <!-- Zone de texte pour les Notes -->
-                                <div class="border p-3 rounded w-75 mb-2">
 
-                                    <label for="notes">Notes :</label>
-                                    <textarea name="notes" class="border-1 rounded" rows="4" cols="30"></textarea>
-                                    <br>
-                                </div>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.000"> Mozzarella (2.000)
+                                        </label><br>
 
-                                <button type="button" class="btn btn-secondary" onclick="submitOrder()">Ajouter au
-                                    panier</button>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.000"> Jambon (2.000)
+                                        </label><br>
+
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.500"> Omelette (2.500)
+                                        </label><br>
+
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.500"> Gruyère (2.500)
+                                        </label><br>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.500"> Edam (2.500)
+                                        </label><br>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.500"> Fromage Blanc (2.500)
+                                        </label><br>
+
+                                        <label>
+                                            <input type="checkbox" name="extras" value="2.500"> Thon (2.500)
+                                        </label><br>
+                                        <label>
+                                            <input type="checkbox" name="extras" value="3.000"> Bacon (3.000)
+                                        </label><br>
+
+                                        <label>
+                                            <input type="checkbox" name="extras" value="3.00"> Escalope Curry (3.000)
+                                        </label><br>
+
+                                        <label>
+                                            <input type="checkbox" name="extras" value="3.000"> Viande Hachee (3.000)
+                                        </label><br>
+
+                                        <label>
+                                            <input type="checkbox" name="extras" value="4.000"> Steak (4.000)
+                                        </label><br>
+                                        <% if (menuItem.MenuCategoryCategoryId=='1' ||
+                                            menuItem.MenuCategoryCategoryId=='2' ) { %>
+                                            <label>
+                                                <input type="checkbox" name="extras" value="2.000" checked> Frites
+                                                (2.000)
+                                            </label><br>
+                                            <% } else { %>
+                                                <label>
+                                                    <input type="checkbox" name="extras" value="2.000"> Frites (2.000)
+                                                </label><br>
+                                                <% } %>
+                                                    <br>
+                                    </div>
+                                    <% } %>
+                                    <!-- Zone de texte pour les Notes -->
+                                    <div class="border p-3 rounded w-75 mb-2">
+
+                                        <label for="notes">Notes :</label>
+                                        <textarea name="notes" class="border-1 rounded" rows="4" cols="30"></textarea>
+                                        <br>
+                                    </div>
+
+                                    <button type="button" class="btn btn-secondary" onclick="submitOrder()">Ajouter au
+                                        panier</button>
                             </form>
                         </div>
                     </div>
@@ -161,8 +186,8 @@
                     const sauce = Array.from(document.querySelectorAll('input[name="sauce"]:checked')).map(checkbox => checkbox.value);
                     const quantity = document.querySelector('input[name="quantity"]').value;
                     const extrasValues = Array.from(document.querySelectorAll('input[name="extras"]:checked')).map(checkbox => checkbox.value);
-                   
-                    
+
+
                     const checkboxes = Array.from(document.querySelectorAll('input[name="extras"]'))
 
                     const checkedExtras = [];
@@ -181,9 +206,9 @@
                     const itemPrice = document.querySelector('input[name="price"]').value;
 
 
-                    let newPrice = parseFloat(itemPrice) ;
-                    for(const extraPrice of extrasValues){
-                        newPrice+= parseFloat(extraPrice)
+                    let newPrice = parseFloat(itemPrice);
+                    for (const extraPrice of extrasValues) {
+                        newPrice += parseFloat(extraPrice)
                     }
 
                     // Concatenate notes
@@ -193,7 +218,7 @@
                     const orderItem = {
                         itemId: itemId, // Add the actual value from your data
                         itemName: itemName,
-                        price: newPrice*quantity, 
+                        price: newPrice * quantity,
                         notes: concatenatedNotes,
                         image: itemImage
                     };

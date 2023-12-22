@@ -31,6 +31,7 @@ $(window).on('load', function () {
 // nice select
 $(document).ready(function() {
     $('select').niceSelect();
+    
   });
 
 
@@ -79,3 +80,43 @@ function increaseCount(a, b) {
     }
   }
   
+
+  $('.owl-carousel').owlCarousel({
+    items:1,
+    loop:true,
+    margin:30,
+    stagePadding:30,
+    smartSpeed:450,
+    autoplay:true,
+    autoplayTimeout:2500,
+    autoplayHoverPause:true
+
+});
+
+
+// $(window).on('load', function () {
+//     console.log("in")
+//     $(".fadeIn-instant").fadeIn();
+// });
+
+$(document).ready(function() {
+    
+    /* Every time the window is scrolled ... */
+    $(window).scroll( function(){
+    
+        /* Check the location of each desired element */
+        $('.fade-in-onscroll').each( function(i){
+            
+            var bottom_of_object = $(this).offset().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
+            
+            /* If the object is completely visible in the window, fade it it */
+            if( bottom_of_window > bottom_of_object * 0.85 ){
+                $(this).animate({'opacity':'1'},500); 
+            }
+            
+        }); 
+    
+    });
+    
+});

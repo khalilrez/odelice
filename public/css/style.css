@@ -1099,7 +1099,7 @@ a:focus {
     transform: translateY(-20px);
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 769px) {
   .floating-fries {
     display: none;
   }
@@ -1221,6 +1221,142 @@ a:focus {
   cursor: pointer;
   color: #ed028b;
   user-select: none;
+}
+
+.banner-delivery-text {
+  font-size: 6rem;
+  font-weight: 700;
+  color: white;
+  font-family: "Montserrat";
+}
+@media only screen and (max-width: 769px) {
+  .banner-delivery-text {
+    font-size: 1.5rem;
+  }
+}
+@media only screen and (max-width: 350px) {
+  .banner-delivery-text {
+    font-size: 1rem;
+  }
+}
+
+.banner-delivery-background {
+  background-image: linear-gradient(to right top, #ed028b, #ef4fa4, #c0488a, #a7437a);
+}
+
+.fade-in-onscroll {
+  opacity: 0;
+}
+
+.food_order_section {
+  position: relative;
+}
+
+.food_order_section::before {
+  content: "";
+  background-image: url("/images/Order food-bro.svg");
+  background-size: 40%;
+  background-repeat: no-repeat;
+  position: absolute;
+  background-position-x: left;
+  background-position-y: bottom;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.5;
+}
+
+.frites-graphic-container {
+  position: relative;
+}
+
+.frites-graphic {
+  position: absolute;
+  right: 0;
+  bottom: 50%;
+}
+
+.frites-graphic img {
+  min-width: 150px;
+  width: 30vw;
+  max-width: 250px;
+}
+
+#cartContents {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+#customerInfo,
+#drinkOptions,
+#cartActions,
+#orderStatus {
+  margin-bottom: 20px;
+}
+
+#customerInfo label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#customerInfo input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+#customerInfo button {
+  padding: 10px;
+  margin-right: 10px;
+}
+
+#drinkOptions label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#drinkOptions input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+#drinkOptions button {
+  padding: 10px;
+  margin-right: 10px;
+}
+
+#totalPrice {
+  padding: 10px;
+  font-weight: bold;
+  font-size: xx-large;
+  float: right;
+}
+
+#orderStatusResult {
+  margin-top: 10px;
+}
+
+.checkout-background {
+  position: relative;
+}
+.checkout-background::before {
+  z-index: -999;
+  content: "";
+  position: absolute;
+  background-image: url("/images/checkout.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-position: 100% 0;
+  opacity: 0.1;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -27,7 +27,7 @@
                 <div class="img-box">
                   <!-- You can replace this image source with the actual image URL from your data -->
                   <img
-                    src="<%= menuItem.image %>"
+                    src="<%= menuItem.image || "https://placehold.co/500" %>"
                     alt="<%= menuItem.itemName %>"
                   />
                 </div>
@@ -35,7 +35,9 @@
                   <h5><%= menuItem.itemName %></h5>
                   <p><%= menuItem.description %></p>
                   <div class="options">
-                    <h6><%= menuItem.price %> D.T</h6>
+                    <h6><%= menuItem.price %> D.T <% if (menuItem.MenuCategoryCategoryId == 1 || menuItem.MenuCategoryCategoryId == 2) { %>
+                      <small>+ Frites 2 D.T</small>
+                    <% } %></h6>
                     <a href="order/<%= menuItem.itemId %>"
                       ><i class="fa fa-shopping-cart text-white"></i
                     ></a>

@@ -2,65 +2,7 @@
 
   <body class="sub_page">
     <style>
-      #cartContents {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 20px;
-      }
 
-      #customerInfo,
-      #drinkOptions,
-      #cartActions,
-      #orderStatus {
-        margin-bottom: 20px;
-      }
-
-      #customerInfo label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-
-      #customerInfo input {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-      }
-
-      #customerInfo button {
-        padding: 10px;
-        margin-right: 10px;
-      }
-
-      #drinkOptions label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-
-      #drinkOptions input {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-      }
-
-      #drinkOptions button {
-        padding: 10px;
-        margin-right: 10px;
-      }
-
-      #totalPrice {
-        padding: 10px;
-        font-weight: bold;
-        font-size: xx-large;
-        float: right;
-      }
-
-      #orderStatusResult {
-        margin-top: 10px;
-      }
     </style>
 
     <%- include('navbar.ejs') %>
@@ -68,7 +10,7 @@
         <h1 class="banner-text">Votre Panier</h1>
       </div>
       <div class="wave-container bg-dark" style="height: 5vh"></div>
-      <section class="cart_section layout_padding">
+      <section class="cart_section layout_padding checkout-background">
         <div class="container">
           <div id="cartContents" class="row p-4"></div>
           <% if (user) { %>

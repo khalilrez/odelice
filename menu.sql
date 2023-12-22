@@ -29,7 +29,7 @@ INSERT INTO menuItems (itemName, price, createdAt, updatedAt, MenuCategoryCatego
 ('Chicken Burger + Frites', '7.000', NOW(), NOW(), 3),
 ('Cheese Burger + Frites', '8.000', NOW(), NOW(), 3),
 ('Double Cheese + Frites', '9.000', NOW(), NOW(), 3),
-('Double Burger Double Cheese', '13.000', NOW(), NOW(), 3);
+('Double Burger Double Cheese + Frites', '13.000', NOW(), NOW(), 3);
 
 
 INSERT INTO menuItems (itemName, description, price, createdAt, updatedAt, MenuCategoryCategoryId) VALUES
