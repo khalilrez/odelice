@@ -1359,4 +1359,12 @@ a:focus {
   opacity: 0.1;
 }
 
+.carousel-title {
+  font-size: 5.5rem !important;
+}
+
+.carousel-paragraph {
+  font-size: 1.5rem !important;
+}
+
 /*# sourceMappingURL=style.css.map */
