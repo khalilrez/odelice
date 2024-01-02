@@ -5,12 +5,20 @@
 
             <section class="cart_section pt-3 pb-5 food_order_section">
                 <div class="container">
-                    <div class="owl-carousel owl-theme">
+                    <div class="owl-carousel owl-theme specials-carousel">
                         <div class="item">
-                            <img class="img-fluid" src="https://placehold.co/800x200" alt="">
+                            <img  src="/images/affiche-800-400.png" alt="" height="400" width="800">
                         </div>
                         <div class="item">
-                            <img class="img-fluid" src="https://placehold.co/800x200" alt="">
+                            <img  src="/images/affiche-800-400.png" alt="" height="400" width="800">
+                        </div>
+                    </div>
+                    <div class="owl-carousel owl-theme specials-mobile-carousel">
+                        <div class="item">
+                            <img class="img-fluid" src="/images/affiche-carré-exemple.png" alt="">
+                        </div>
+                        <div class="item">
+                            <img class="img-fluid" src="/images/affiche-carré-exemple.png" alt="" >
                         </div>
                     </div>
                     <div class="heading_center row">
@@ -31,14 +39,13 @@
                                 </div>
 
                                 <% } %>
+                                <div class="pricebox">
+                                    <%= menuItem.price %> D.T
+                                </div>
                         
                         </div>
-                        <div class="col-12 col-md-6 frites-graphic-container">
-                            <% if (menuItem.MenuCategoryCategoryId == 1 || menuItem.MenuCategoryCategoryId == 2) { %>
-                            <div class="frites-graphic">
-                                <img src="/images/frites-graphic.png" alt="">
-                            </div>
-                            <% } %>
+                        <div class="col-12 col-md-6 ">
+            
                             <!--  order form -->
                             <form method="post" onsubmit="return false;" class="d-flex flex-column align-items-center">
                                 <h2>Personnalisez Votre Commande</h2>
@@ -70,6 +77,20 @@
                                         <input type="radio" name="breadType" value="wholegrain"> Complet
                                         <br>
                                     </div>
+                                    <% if (menuItem.MenuCategoryCategoryId == 1 || menuItem.MenuCategoryCategoryId == 2) { %>
+                                    <div class=" p-3 rounded w-75 mb-2 frites-graphic-container shiny-border">
+                                            <div class="frites-graphic">
+                                                <img src="/images/frites-graphic.png" alt="">
+                                            </div>
+                                        <!-- Boutons radio pour le type de pain -->
+                                        <label for="breadType">Frites : (+2dt)</label>
+                                        <input type="radio" name="frites" value="avec-frites" checked> Avec
+                                        <input type="radio" name="frites" value="sans-frites"> Sans
+
+                                        <br>
+                                    </div>
+                                    <% } %>
+
                                     <!-- Cases à cocher pour la Garniture -->
                                     <div class="border p-3 rounded w-75 mb-2">
                                         <label for="garniture">Garniture :</label>
@@ -148,25 +169,13 @@
                                         <label>
                                             <input type="checkbox" name="extras" value="4.000"> Steak (4.000)
                                         </label><br>
-                                        <% if (menuItem.MenuCategoryCategoryId=='1' ||
-                                            menuItem.MenuCategoryCategoryId=='2' ) { %>
-                                            <label>
-                                                <input type="checkbox" name="extras" value="2.000" checked> Frites
-                                                (2.000)
-                                            </label><br>
-                                            <% } else { %>
-                                                <label>
-                                                    <input type="checkbox" name="extras" value="2.000"> Frites (2.000)
-                                                </label><br>
-                                                <% } %>
-                                                    <br>
                                     </div>
                                     <% } %>
                                     <!-- Zone de texte pour les Notes -->
                                     <div class="border p-3 rounded w-75 mb-2">
 
                                         <label for="notes">Notes :</label>
-                                        <textarea name="notes" class="border-1 rounded" rows="4" cols="30"></textarea>
+                                        <textarea name="notes" class="border-1 rounded" rows="4"></textarea>
                                         <br>
                                     </div>
 
@@ -182,6 +191,8 @@
                 function submitOrder() {
                     // Get values from form fields
                     const breadType = document.querySelector('input[name="breadType"]:checked').value;
+                    const frites = document.querySelector('input[name="frites"]:checked').value;
+
                     const garniture = Array.from(document.querySelectorAll('input[name="garniture"]:checked')).map(checkbox => checkbox.value);
                     const sauce = Array.from(document.querySelectorAll('input[name="sauce"]:checked')).map(checkbox => checkbox.value);
                     const quantity = document.querySelector('input[name="quantity"]').value;
@@ -211,8 +222,12 @@
                         newPrice += parseFloat(extraPrice)
                     }
 
+                    if(frites=="avec-frites"){
+                        newPrice+=2
+                    }
+
                     // Concatenate notes
-                    const concatenatedNotes = `Pain: ${breadType}\nGarniture: ${garniture.join(', ')}\nSauce: ${sauce.join(', ')}\nQuantité: ${quantity}\nExtras: ${checkedExtras.join(', ')}\nNotes: ${notes}`;
+                    const concatenatedNotes = `Pain: ${breadType}\nFrites: ${frites}\nGarniture: ${garniture.join(', ')}\nSauce: ${sauce.join(', ')}\nQuantité: ${quantity}\nExtras: ${checkedExtras.join(', ')}\nNotes: ${notes}`;
 
                     // Create orderItem object
                     const orderItem = {

@@ -88,8 +88,30 @@
     </div>
   </div>
 </div>
-<!-- Floating Buttons for Mobile -->
 
+<style>
+
+</style>
+<a href="#" id="back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+
+<script>
+  const backToTopButton = document.querySelector('#back-to-top');
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) { /* Show button when scrolled down 600px */
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  });
+</script>
 <script src="/js/jquery-3.4.1.min.js"></script>
 
 <!-- Popper.js -->
